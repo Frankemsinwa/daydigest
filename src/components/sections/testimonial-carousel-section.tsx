@@ -10,7 +10,10 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from '@/components/ui/carousel';
+import { useIsMobile } from '@/hooks/use-mobile';
+import Autoplay from 'embla-carousel-autoplay';
 
 interface Testimonial {
   id: string;
@@ -64,6 +67,16 @@ const testimonials: Testimonial[] = [
 ];
 
 export function TestimonialCarouselSection() {
+  const isMobile = useIsMobile();
+  const [api, setApi] = React.useState<CarouselApi>();
+
+  const autoplayPlugin = React.useMemo(() => {
+    if (isMobile) {
+      return Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: true });
+    }
+    return undefined;
+  }, [isMobile]);
+
   return (
     <section id="testimonials" className="py-16 md:py-24 bg-transparent animate-in fade-in slide-in-from-bottom-12 duration-700 ease-out">
       <div className="container mx-auto px-4">
@@ -81,6 +94,8 @@ export function TestimonialCarouselSection() {
             align: 'start',
             loop: true,
           }}
+          plugins={autoplayPlugin ? [autoplayPlugin] : undefined}
+          setApi={setApi}
           className="w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto"
         >
           <CarouselContent className="-ml-4">
