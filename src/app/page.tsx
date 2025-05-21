@@ -7,6 +7,7 @@ import { FocusRecommendationsSection } from "@/components/sections/focus-recomme
 import { ReflectionPromptsSection } from "@/components/sections/reflection-prompts-section";
 import { TestimonialCarouselSection } from "@/components/sections/testimonial-carousel-section";
 import { PricingSection } from "@/components/sections/pricing-section";
+import { FaqSection } from "@/components/sections/faq-section";
 import { Separator } from "@/components/ui/separator";
 
 export default function HomePage() {
@@ -32,6 +33,8 @@ export default function HomePage() {
           <section id="pricing" className="scroll-mt-20">
             <PricingSection />
           </section>
+          <Separator className="my-8 md:my-12 max-w-md mx-auto bg-border/30" />
+          <FaqSection />
           <Separator className="my-8 md:my-12 max-w-md mx-auto bg-border/30" />
           <section id="get-started" className="py-16 md:py-24 text-center scroll-mt-20 container mx-auto px-4">
             <div className="max-w-2xl mx-auto">
