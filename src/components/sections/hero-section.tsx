@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-// import heroImage from "@/assets/img/hero.png"; // Assuming the new image is saved here
+// import heroImage from "@/assets/img/hero.jpg"; // Assuming the new image is saved here
 
 export function HeroSection() {
   return (
@@ -9,12 +9,12 @@ export function HeroSection() {
       <div
         aria-hidden="true"
         className="absolute -top-80 -left-80 w-[700px] h-[700px]
-                   bg-primary opacity-[0.06] 
+                   bg-primary opacity-[0.06]
                    rounded-full
                    blur-[120px]
                    pointer-events-none"
       />
-      
+
       {/* Main content container */}
       <div className="relative z-10 container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-6 text-center md:text-left">
@@ -28,14 +28,15 @@ export function HeroSection() {
             Start Your Journey
           </Button>
         </div>
-        <div className="relative aspect-video rounded-xl overflow-hidden shadow-2xl group border border-border/50 animate-in fade-in zoom-in-95 duration-700 [animation-delay:400ms]">
-           <Image 
-            src="https://placehold.co/600x400.png" 
-            alt="Stylized brain with a clock placeholder" 
+        <div className="relative aspect-video rounded-xl overflow-hidden group border border-primary/30 shadow-[0_0_35px_2px_hsl(var(--primary)/0.3)] hover:shadow-[0_0_45px_5px_hsl(var(--primary)/0.4)] transition-shadow duration-300 ease-out animate-in fade-in zoom-in-95 [animation-delay:400ms]">
+           <Image
+            // src={heroImage}
+            src="https://placehold.co/600x400.png" // Reverted to placeholder
+            alt="Stylized brain with a clock placeholder"
             layout="fill"
             objectFit="cover" // Changed from "contain" to "cover"
             className="w-full h-full transform transition-transform duration-500 group-hover:scale-105"
-            priority 
+            priority
             data-ai-hint="brain clock"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
