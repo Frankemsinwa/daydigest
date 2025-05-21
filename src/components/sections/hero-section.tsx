@@ -33,8 +33,8 @@ export function HeroSection() {
             src="https://placehold.co/600x400.png" 
             alt="Stylized brain with a clock placeholder" 
             layout="fill"
-            objectFit="contain"
-            className="transform transition-transform duration-500 group-hover:scale-105"
+            objectFit="cover" // Changed from "contain" to "cover"
+            className="w-full h-full transform transition-transform duration-500 group-hover:scale-105"
             priority 
             data-ai-hint="brain clock"
           />
