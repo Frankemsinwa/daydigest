@@ -3,7 +3,7 @@ import { AiFeatureCard } from "./ai-feature-card";
 
 export function FocusRecommendationsSection() {
   return (
-    <section id="focus-recommendations" className="py-16 md:py-24 bg-card">
+    <section id="focus-recommendations" className="py-16 md:py-24 bg-transparent"> {/* bg-transparent or subtle contrast */}
       <div className="container mx-auto px-4">
          <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground">

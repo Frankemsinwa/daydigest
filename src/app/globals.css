@@ -4,50 +4,58 @@
 
 body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  /* Added for Plain.com style background */
+  background-image: url('https://placehold.co/1920x1080.png?text=Replace+with+Abstract+Dark+Texture');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%; /* Default dark mode background */
-    --foreground: 0 0% 98%; /* Default dark mode foreground */
+    /* Default theme (fallback, not actively used due to .dark class on html) */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
 
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
 
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
 
-    --primary: 248 39% 41%; /* Deep Indigo: #483D8B */
+    --primary: 210 100% 56%; /* Bright Blue */
     --primary-foreground: 0 0% 100%; /* White */
 
-    --secondary: 240 4.8% 15.9%; /* Darker Gray */
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
 
-    --muted: 240 4.8% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: 271 76% 53%; /* Muted Violet: #8A2BE2 */
+    --accent: 210 100% 56%; /* Bright Blue */
     --accent-foreground: 0 0% 100%; /* White */
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 3.7% 15.9%; /* Darker border */
-    --input: 240 3.7% 15.9%;
-    --ring: 271 76% 53%; /* Accent for rings */
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 210 100% 56%; /* Bright Blue */
 
     --radius: 0.5rem;
 
-    /* Custom theme for DayDigest */
-    --dd-background: 0 0% 13%; /* Very Dark Gray: #212121 */
-    --dd-foreground: 0 0% 96%; /* Light Gray: #F5F5F5 */
-    --dd-primary: 248 39% 41%; /* Deep Indigo: #483D8B */
-    --dd-primary-foreground: 0 0% 100%; /* White */
-    --dd-accent: 271 76% 53%; /* Muted Violet: #8A2BE2 */
-    --dd-accent-foreground: 0 0% 100%; /* White */
-    --dd-card: 0 0% 17%; /* Slightly Lighter Dark Gray: #2C2C2C */
-    --dd-card-foreground: 0 0% 96%; /* Light Gray: #F5F5F5 */
-    --dd-border: 0 0% 24%; /* Subtle Border: #3D3D3D */
+    /* Plain.com style dark theme variables (original --dd- variables renamed for clarity) */
+    --plain-background: 220 17% 7%; /* Very Dark Cool Gray: #0F1217 */
+    --plain-foreground: 0 0% 95%; /* Light Gray/Off-white: #F2F2F2 */
+    --plain-primary: 210 100% 56%; /* Bright Blue: #1D8DFF */
+    --plain-primary-foreground: 0 0% 100%; /* White */
+    --plain-accent: 210 100% 56%; /* Bright Blue */
+    --plain-accent-foreground: 0 0% 100%; /* White */
+    --plain-card: 220 17% 10%; /* Slightly Lighter Dark Gray: #151A21 (or transparent) */
+    --plain-card-foreground: 0 0% 95%;
+    --plain-muted-foreground: 220 10% 65%; /* Lighter Gray for muted text: #949CA5 */
+    --plain-border: 220 15% 20%; /* Subtle Border: #2A303B */
 
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
@@ -57,31 +65,31 @@ body {
   }
 
   .dark {
-    --background: var(--dd-background);
-    --foreground: var(--dd-foreground);
-    --card: var(--dd-card);
-    --card-foreground: var(--dd-card-foreground);
-    --popover: var(--dd-card);
-    --popover-foreground: var(--dd-card-foreground);
-    --primary: var(--dd-primary);
-    --primary-foreground: var(--dd-primary-foreground);
-    --secondary: 0 0% 14.9%; /* Default dark secondary */
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: var(--dd-accent);
-    --accent-foreground: var(--dd-accent-foreground);
-    --destructive: 0 62.8% 30.6%;
+    --background: var(--plain-background);
+    --foreground: var(--plain-foreground);
+    --card: var(--plain-card);
+    --card-foreground: var(--plain-card-foreground);
+    --popover: var(--plain-card); /* Or a more opaque dark */
+    --popover-foreground: var(--plain-card-foreground);
+    --primary: var(--plain-primary);
+    --primary-foreground: var(--plain-primary-foreground);
+    --secondary: 220 15% 15%; /* Darker than card, for subtle secondary elements */
+    --secondary-foreground: var(--plain-foreground);
+    --muted: 220 15% 15%;
+    --muted-foreground: var(--plain-muted-foreground);
+    --accent: var(--plain-accent);
+    --accent-foreground: var(--plain-accent-foreground);
+    --destructive: 0 70% 50%; /* Adjusted destructive for dark theme */
     --destructive-foreground: 0 0% 98%;
-    --border: var(--dd-border);
-    --input: var(--dd-border);
-    --ring: var(--dd-accent);
+    --border: var(--plain-border);
+    --input: var(--plain-border); /* Inputs on dark bg */
+    --ring: var(--plain-primary); /* Ring color to primary */
 
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --chart-1: 210 90% 60%;
+    --chart-2: 160 70% 50%;
+    --chart-3: 30 90% 60%;
+    --chart-4: 280 75% 65%;
+    --chart-5: 340 85% 60%;
   }
 }
 
@@ -91,7 +99,5 @@ body {
   }
   body {
     @apply bg-background text-foreground;
-    /* Force dark theme for this app */
-    /* Add 'dark' class to html tag in layout.tsx if system preference is not desired */
   }
 }
