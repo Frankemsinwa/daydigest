@@ -17,17 +17,17 @@ export function HeroSection() {
       {/* Main content container */}
       <div className="relative z-10 container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-6 text-center md:text-left">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground animate-in fade-in slide-in-from-bottom-4 duration-700">
             Unlock Your Day&apos;s Potential with DayDigest
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground">
+          <p className="text-lg md:text-xl text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-700 [animation-delay:300ms]">
             Transform daily reflections into actionable insights and focused growth. AI-powered summaries, recommendations, and prompts at your fingertips.
           </p>
-          <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform duration-300 hover:scale-105 rounded-full">
+          <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform duration-300 hover:scale-105 rounded-full animate-in fade-in zoom-in-95 duration-700 [animation-delay:600ms]">
             Start Your Journey
           </Button>
         </div>
-        <div className="relative aspect-video rounded-xl overflow-hidden shadow-2xl group border border-border/50">
+        <div className="relative aspect-video rounded-xl overflow-hidden shadow-2xl group border border-border/50 animate-in fade-in zoom-in-95 duration-700 [animation-delay:400ms]">
            <Image 
             src="https://placehold.co/600x400.png" 
             alt="Productivity illustration" 
