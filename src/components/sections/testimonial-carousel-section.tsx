@@ -65,7 +65,7 @@ const testimonials: Testimonial[] = [
 
 export function TestimonialCarouselSection() {
   return (
-    <section id="testimonials" className="py-16 md:py-24 bg-transparent">
+    <section id="testimonials" className="py-16 md:py-24 bg-transparent animate-in fade-in slide-in-from-bottom-12 duration-700 ease-out">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 md:mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground">

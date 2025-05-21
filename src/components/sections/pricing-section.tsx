@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"; // Card is still used for structure
 import { CheckCircle2, Zap } from "lucide-react";
@@ -36,7 +37,7 @@ const plans = [
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="py-16 md:py-24 bg-transparent"> {/* bg-transparent or subtle contrast like bg-card */}
+    <section id="pricing" className="py-16 md:py-24 bg-transparent scroll-mt-20 animate-in fade-in slide-in-from-bottom-12 duration-700 ease-out"> {/* bg-transparent or subtle contrast like bg-card */}
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground">

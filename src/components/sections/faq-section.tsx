@@ -32,7 +32,7 @@ const faqItems = [
 
 export function FaqSection() {
   return (
-    <section id="faq" className="py-16 md:py-24 bg-transparent scroll-mt-20">
+    <section id="faq" className="py-16 md:py-24 bg-transparent scroll-mt-20 animate-in fade-in slide-in-from-bottom-12 duration-700 ease-out">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 md:mb-16">
           <HelpCircle className="h-12 w-12 text-primary mx-auto mb-4" />
