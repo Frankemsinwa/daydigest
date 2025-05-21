@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { Brain } from 'lucide-react';
+import { Brain, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 
 export function Navbar() {
   return (
@@ -10,11 +11,50 @@ export function Navbar() {
           <Brain className="h-7 w-7 text-primary" />
           <span className="text-2xl font-bold text-foreground">DayDigest</span>
         </Link>
-        <nav className="flex items-center space-x-2">
-           <Button variant="ghost">Features</Button>
-           <Button variant="ghost">Pricing</Button>
-           <Button>Get Started</Button>
+        
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center space-x-2">
+           <Button variant="ghost" asChild>
+             <Link href="/#features">Features</Link>
+           </Button>
+           <Button variant="ghost" asChild>
+             <Link href="/#pricing">Pricing</Link>
+           </Button>
+           <Button asChild>
+             <Link href="/#get-started">Get Started</Link>
+           </Button>
         </nav>
+
+        {/* Mobile Navigation */}
+        <div className="md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right">
+              <nav className="flex flex-col space-y-4 mt-8">
+                <SheetClose asChild>
+                  <Button variant="ghost" className="justify-start text-lg" asChild>
+                    <Link href="/#features">Features</Link>
+                  </Button>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Button variant="ghost" className="justify-start text-lg" asChild>
+                    <Link href="/#pricing">Pricing</Link>
+                  </Button>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Button className="justify-center text-lg" asChild>
+                    <Link href="/#get-started">Get Started</Link>
+                  </Button>
+                </SheetClose>
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </header>
   );
