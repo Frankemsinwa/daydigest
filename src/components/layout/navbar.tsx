@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Brain, Menu } from 'lucide-react';
+import { Brain, Menu, HelpCircle } from 'lucide-react'; // Added HelpCircle for potential future use, not used yet.
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription, SheetHeader } from '@/components/ui/sheet';
 
@@ -21,6 +21,9 @@ export function Navbar() {
            </Button>
            <Button variant="ghost" asChild className="text-foreground hover:text-primary">
              <Link href="/#pricing">Pricing</Link>
+           </Button>
+           <Button variant="ghost" asChild className="text-foreground hover:text-primary">
+             <Link href="/#faq">FAQ</Link>
            </Button>
            <Button asChild className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
              <Link href="/#get-started">Get Started</Link>
@@ -54,6 +57,11 @@ export function Navbar() {
                 <SheetClose asChild>
                   <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary" asChild>
                     <Link href="/#pricing">Pricing</Link>
+                  </Button>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary" asChild>
+                    <Link href="/#faq">FAQ</Link>
                   </Button>
                 </SheetClose>
                 <SheetClose asChild>
