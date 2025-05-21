@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'DayDigest - Reflect, Focus, Grow',
   description: 'AI-powered daily summaries, focus recommendations, and reflection prompts to enhance your productivity and personal growth.',
+  icons: {
+    icon: '/icon.png', // Next.js will look for icon.png in the app directory
+  },
 };
 
 export default function RootLayout({
