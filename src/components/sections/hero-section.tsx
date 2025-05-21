@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-// import heroImage from "@/assets/img/hero.png"; // Assuming the new image is saved here
+import heroImage from "@/assets/img/hero.jpg"; // Assuming the new image is saved here
 // import MovingStarsBackground from "@/components/effects/moving-stars-background";
 import Link from 'next/link';
 
@@ -33,7 +33,7 @@ export function HeroSection() {
         </div>
         <div className="relative aspect-video rounded-xl overflow-hidden group border border-primary/30 shadow-[0_0_35px_2px_hsl(var(--primary)/0.3)] hover:shadow-[0_0_45px_5px_hsl(var(--primary)/0.4)] transition-shadow duration-300 ease-out animate-in fade-in zoom-in-95 [animation-delay:400ms]">
            <Image
-            src="https://placehold.co/600x400.png" // Using placeholder
+            src={heroImage} // Using placeholder
             alt="Stylized brain with a clock"
             layout="fill"
             objectFit="cover" // Changed from "contain" to "cover"
