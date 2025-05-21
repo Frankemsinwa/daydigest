@@ -72,7 +72,7 @@ export function TestimonialCarouselSection() {
 
   const autoplayPlugin = React.useMemo(() => {
     if (isMobile) {
-      return Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: true });
+      return Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true });
     }
     return undefined;
   }, [isMobile]);

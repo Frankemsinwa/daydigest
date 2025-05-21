@@ -26,7 +26,7 @@ export function Navbar() {
              <Link href="/#faq">FAQ</Link>
            </Button>
            <Button asChild className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
-             <Link href="/#get-started">Get Started</Link>
+             <Link href="/#pricing">Get Started</Link>
            </Button>
         </nav>
 
@@ -66,7 +66,7 @@ export function Navbar() {
                 </SheetClose>
                 <SheetClose asChild>
                   <Button className="justify-center text-lg rounded-full bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
-                    <Link href="/#get-started">Get Started</Link>
+                    <Link href="/#pricing">Get Started</Link>
                   </Button>
                 </SheetClose>
               </nav>
