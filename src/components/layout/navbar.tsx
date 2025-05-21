@@ -8,13 +8,16 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container px-4 flex h-16 max-w-screen-2xl items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
-          <Brain className="h-7 w-7 text-foreground" /> {/* Changed to text-foreground */}
+          <Brain className="h-7 w-7 text-foreground" />
           <span className="text-2xl font-bold text-foreground">DayDigest</span>
         </Link>
         
         <nav className="hidden md:flex items-center space-x-2">
            <Button variant="ghost" asChild className="text-foreground hover:text-primary">
              <Link href="/#features">Features</Link>
+           </Button>
+           <Button variant="ghost" asChild className="text-foreground hover:text-primary">
+             <Link href="/#testimonials">Testimonials</Link>
            </Button>
            <Button variant="ghost" asChild className="text-foreground hover:text-primary">
              <Link href="/#pricing">Pricing</Link>
@@ -41,6 +44,11 @@ export function Navbar() {
                 <SheetClose asChild>
                   <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary" asChild>
                     <Link href="/#features">Features</Link>
+                  </Button>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary" asChild>
+                    <Link href="/#testimonials">Testimonials</Link>
                   </Button>
                 </SheetClose>
                 <SheetClose asChild>
