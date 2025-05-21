@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+// import heroImage from "@/assets/img/hero.png"; // Assuming the new image is saved here
 
 export function HeroSection() {
   return (
@@ -30,11 +31,12 @@ export function HeroSection() {
         <div className="relative aspect-video rounded-xl overflow-hidden shadow-2xl group border border-border/50 animate-in fade-in zoom-in-95 duration-700 [animation-delay:400ms]">
            <Image 
             src="https://placehold.co/600x400.png" 
-            alt="Productivity illustration" 
+            alt="Stylized brain with a clock placeholder" 
             layout="fill"
-            objectFit="cover"
+            objectFit="contain"
             className="transform transition-transform duration-500 group-hover:scale-105"
-            data-ai-hint="abstract technology"
+            priority 
+            data-ai-hint="brain clock"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
         </div>
