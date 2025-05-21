@@ -1,9 +1,11 @@
+
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/sections/hero-section";
 import { DailySummarySection } from "@/components/sections/daily-summary-section";
 import { FocusRecommendationsSection } from "@/components/sections/focus-recommendations-section";
 import { ReflectionPromptsSection } from "@/components/sections/reflection-prompts-section";
+import { TestimonialCarouselSection } from "@/components/sections/testimonial-carousel-section";
 import { PricingSection } from "@/components/sections/pricing-section";
 import { Separator } from "@/components/ui/separator";
 
@@ -24,7 +26,9 @@ export default function HomePage() {
               <ReflectionPromptsSection />
             </div>
           </section>
-          <Separator className="my-8 md:my-12 max-w-md mx-auto bg-border/30" /> {/* Wider separator */}
+          <Separator className="my-8 md:my-12 max-w-md mx-auto bg-border/30" />
+          <TestimonialCarouselSection />
+          <Separator className="my-8 md:my-12 max-w-md mx-auto bg-border/30" />
           <section id="pricing" className="scroll-mt-20">
             <PricingSection />
           </section>
