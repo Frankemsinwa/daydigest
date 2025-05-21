@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Brain, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 
 export function Navbar() {
   return (
@@ -35,6 +35,8 @@ export function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
+              <SheetTitle className="sr-only">Menu</SheetTitle>
+              <SheetDescription className="sr-only">Main navigation menu</SheetDescription>
               <nav className="flex flex-col space-y-4 mt-8">
                 <SheetClose asChild>
                   <Button variant="ghost" className="justify-start text-lg" asChild>
