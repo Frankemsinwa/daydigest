@@ -1,3 +1,4 @@
+// src/ai/flows/generate-reflection-prompt.ts
 'use server';
 
 /**
@@ -8,21 +9,26 @@
  * - GenerateReflectionPromptOutput - The return type for the generateReflectionPrompt function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
 
 const GenerateReflectionPromptInputSchema = z.object({
   userContext: z
     .string()
-    .describe(
-      'Information about the user, including their role, interests, and goals.'
-    ),
+    .describe('Information about the user, including their role, interests, and goals.'),
   dailyAccomplishments: z
     .string()
-    .describe(
-      'A summary of the user\'s accomplishments for the day. Should include specific actions and outcomes.'
-    ),
+    .describe('Specific actions and outcomes achieved by the user today.'),
+  goals: z
+    .string()
+    .optional()
+    .describe('The user’s long-term goals for better alignment in reflection.'),
+  userName: z
+    .string()
+    .optional()
+    .describe("The user's name for a personalized experience."),
 });
+
 export type GenerateReflectionPromptInput = z.infer<
   typeof GenerateReflectionPromptInputSchema
 >;
@@ -30,10 +36,9 @@ export type GenerateReflectionPromptInput = z.infer<
 const GenerateReflectionPromptOutputSchema = z.object({
   reflectionPrompt: z
     .string()
-    .describe(
-      'A unique, AI-generated reflection prompt to help the user think about how the day went.'
-    ),
+    .describe('A unique, AI-generated reflection prompt to encourage self-assessment.'),
 });
+
 export type GenerateReflectionPromptOutput = z.infer<
   typeof GenerateReflectionPromptOutputSchema
 >;
@@ -46,20 +51,23 @@ export async function generateReflectionPrompt(
 
 const prompt = ai.definePrompt({
   name: 'generateReflectionPromptPrompt',
-  input: {schema: GenerateReflectionPromptInputSchema},
-  output: {schema: GenerateReflectionPromptOutputSchema},
-  prompt: `You are an AI assistant designed to generate unique and engaging reflection prompts for users at the end of their day.
+  input: { schema: GenerateReflectionPromptInputSchema },
+  output: { schema: GenerateReflectionPromptOutputSchema },
+  prompt: `You are an AI that crafts thoughtful, one-sentence reflection prompts.
 
-  Consider the user's context and their daily accomplishments to tailor the prompt to their specific situation.
+{{#if userName}}User: {{{userName}}}{{/if}}
+User Context: {{{userContext}}}
+Accomplishments: {{{dailyAccomplishments}}}
+{{#if goals}}Goals: {{{goals}}}{{/if}}
 
-  User Context: {{{userContext}}}
-  Daily Accomplishments: {{{dailyAccomplishments}}}
+Generate one meaningful question to help the user reflect on:
+- Their personal growth
+- Key takeaways from the day
+- Alignment with their goals
 
-  Generate a single, thought-provoking question that encourages the user to reflect on their day, their actions, and their learnings. Focus on promoting self-assessment and mental clarity.
-  The reflection prompt should encourage self-assessment and mental clarity.
-  Do not start the prompt with "Here is a reflection prompt" or anything similar.
-  Do not generate more than one prompt.
-  Reflection Prompt:`,
+Avoid generic phrasing. Make it feel personal, deep, and relevant. Avoid starting with "Here is your prompt".
+
+Reflection Prompt:`,
 });
 
 const generateReflectionPromptFlow = ai.defineFlow(
@@ -69,7 +77,7 @@ const generateReflectionPromptFlow = ai.defineFlow(
     outputSchema: GenerateReflectionPromptOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
+    const { output } = await prompt(input);
     return output!;
   }
 );
