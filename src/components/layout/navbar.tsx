@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { Brain, Menu, HelpCircle } from 'lucide-react'; // Added HelpCircle for potential future use, not used yet.
 import { Button } from '@/components/ui/button';
@@ -26,7 +27,7 @@ export function Navbar() {
              <Link href="/#faq">FAQ</Link>
            </Button>
            <Button asChild className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
-             <Link href="/#pricing">Get Started</Link>
+             <Link href="/signup">Get Started</Link>
            </Button>
         </nav>
 
@@ -66,7 +67,7 @@ export function Navbar() {
                 </SheetClose>
                 <SheetClose asChild>
                   <Button className="justify-center text-lg rounded-full bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
-                    <Link href="/#pricing">Get Started</Link>
+                    <Link href="/signup">Get Started</Link>
                   </Button>
                 </SheetClose>
               </nav>
