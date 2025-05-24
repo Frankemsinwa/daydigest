@@ -7,12 +7,12 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { ChromeIcon } from 'lucide-react'; // Using ChromeIcon as a stand-in for Google logo
 
 import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/lib/supabaseClient';
 import { useToast } from '@/hooks/use-toast';
 
@@ -32,6 +33,7 @@ export function SignInForm() {
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = React.useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,6 +67,29 @@ export function SignInForm() {
     }
   }
 
+  async function handleGoogleSignIn() {
+    setIsGoogleLoading(true);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        // You might want to specify a redirectTo path if needed,
+        // e.g., redirectTo: `${window.location.origin}/auth/callback`
+        // However, Supabase usually handles this based on your project's URL config.
+      },
+    });
+    setIsGoogleLoading(false);
+
+    if (error) {
+      toast({
+        title: 'Google Sign-In Failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+    }
+    // Supabase redirects to Google and then back to your app.
+    // If successful, the user session is handled by Supabase.
+  }
+
   return (
     <Card className="w-full max-w-md bg-card/70 backdrop-blur-sm border border-border/70">
       <CardHeader>
@@ -83,7 +108,7 @@ export function SignInForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="you@example.com" {...field} type="email" disabled={isLoading} />
+                    <Input placeholder="you@example.com" {...field} type="email" disabled={isLoading || isGoogleLoading} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,19 +121,46 @@ export function SignInForm() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="••••••••" {...field} type="password" disabled={isLoading} />
+                    <Input placeholder="••••••••" {...field} type="password" disabled={isLoading || isGoogleLoading} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full rounded-full" disabled={isLoading}>
+            <Button type="submit" className="w-full rounded-full" disabled={isLoading || isGoogleLoading}>
               {isLoading ? 'Signing In...' : 'Sign In'}
             </Button>
           </form>
         </Form>
+
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-border/50" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
+
+        <Button
+          variant="outline"
+          className="w-full rounded-full border-border/70 hover:bg-accent/50"
+          onClick={handleGoogleSignIn}
+          disabled={isLoading || isGoogleLoading}
+        >
+          {isGoogleLoading ? (
+            'Redirecting...'
+          ) : (
+            <>
+              <ChromeIcon className="mr-2 h-4 w-4" />
+              Continue with Google
+            </>
+          )}
+        </Button>
       </CardContent>
-      <CardFooter className="flex flex-col items-center space-y-2">
+      <CardFooter className="flex flex-col items-center space-y-2 pt-6">
         <p className="text-sm text-muted-foreground">
           Don&apos;t have an account?{' '}
           <Button variant="link" className="p-0 h-auto text-primary" asChild>
