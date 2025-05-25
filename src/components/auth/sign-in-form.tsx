@@ -20,7 +20,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/lib/supabaseClient';
 import { useToast } from '@/hooks/use-toast';
 
@@ -62,8 +61,8 @@ export function SignInForm() {
         title: 'Sign In Successful',
         description: 'Welcome back! Redirecting to dashboard...',
       });
-      router.push('/dashboard'); // Changed to /dashboard
-      router.refresh();
+      router.push('/dashboard');
+      router.refresh(); // Important to refresh server components and re-evaluate auth state
     }
   }
 
@@ -72,7 +71,7 @@ export function SignInForm() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/dashboard`, // Added redirectTo for post-OAuth redirect
+        redirectTo: `${window.location.origin}/auth/callback`, // Changed to /auth/callback
       },
     });
     setIsGoogleLoading(false);
@@ -84,6 +83,7 @@ export function SignInForm() {
         variant: 'destructive',
       });
     }
+    // No client-side redirect here, middleware will handle it after /auth/callback
   }
 
   return (

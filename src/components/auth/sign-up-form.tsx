@@ -48,7 +48,7 @@ export function SignUpForm() {
       email: values.email,
       password: values.password,
       options: {
-        emailRedirectTo: `${window.location.origin}/dashboard`, // Added for email confirmation redirect
+        emailRedirectTo: `${window.location.origin}/auth/callback`, // Changed to /auth/callback
       },
     });
     
@@ -62,6 +62,9 @@ export function SignUpForm() {
       });
     } else if (data.user) {
       try {
+        // The database trigger public.handle_new_user should handle profile creation.
+        // If you don't have the trigger, you'd upsert here:
+        /*
         const { error: profileError } = await supabase
           .from('users')
           .upsert({
@@ -79,8 +82,9 @@ export function SignUpForm() {
             duration: 7000,
           });
         }
+        */
       } catch (e) {
-        console.error('Exception during user profile creation:', e);
+        console.error('Exception during potential user profile creation:', e);
          toast({
             title: 'Profile Exception',
             description: 'An unexpected error occurred while setting up your profile.',
@@ -92,20 +96,22 @@ export function SignUpForm() {
       setIsLoading(false); 
 
       if (data.user.identities && data.user.identities.length === 0 && !data.session) {
+        // This case typically indicates the email is already registered but not confirmed with the current provider (e.g. email/pass)
+        // Or if email confirmation is required and it's the first time.
         toast({
-          title: 'Email Confirmation Required',
-          description: 'This email is already registered. Please check your inbox for a confirmation link, or try signing in.',
+          title: 'Confirmation Required or Email Exists',
+          description: 'Please check your email for a confirmation link. If already registered, try signing in.',
           variant: 'default',
           duration: 10000,
         });
-      } else if (data.session) {
+      } else if (data.session) { // User is immediately active (e.g., auto-confirm is on, or social login that doesn't need email confirm)
         toast({
           title: 'Sign Up Successful',
           description: 'Welcome! Redirecting to dashboard...',
         });
-        router.push('/dashboard'); // Changed to /dashboard
+        router.push('/dashboard');
         router.refresh();
-      } else if (data.user && !data.session) { 
+      } else if (data.user && !data.session) { // Standard email confirmation flow
          toast({
           title: 'Sign Up Successful!',
           description: 'Please check your email to confirm your account.',
@@ -127,7 +133,7 @@ export function SignUpForm() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/dashboard`, // Added redirectTo for post-OAuth redirect
+        redirectTo: `${window.location.origin}/auth/callback`, // Changed to /auth/callback
       },
     });
     setIsGoogleLoading(false); 
@@ -139,6 +145,7 @@ export function SignUpForm() {
         variant: 'destructive',
       });
     }
+    // No client-side redirect here, middleware will handle it after /auth/callback
   }
 
   return (
