@@ -1,12 +1,28 @@
 
-import { createMiddlewareClient } from '@supabase/ssr'; // Standard import for Supabase SSR
+import { createServerClient } from '@supabase/ssr'; // Standard import for Supabase SSR
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import type { Database } from '@/types/supabase';
+import type { CookieOptions } from '@supabase/ssr'
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
-  const supabase = createMiddlewareClient<Database>({ req, res });
+  const supabase = createServerClient<Database>(
+ process.env.NEXT_PUBLIC_SUPABASE_URL!, // Your Supabase Project URL
+ process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, // Your Supabase Project anon key
+ {
+ cookies: {
+ get(name: string) {
+ return req.cookies.get(name)?.value;
+      },
+ set(name: string, value: string, options: CookieOptions) {
+ res.cookies.set({ name, value, ...options });
+      },
+ remove(name: string, options: CookieOptions) {
+ res.cookies.set({ name, value: '', ...options });
+      },
+    },
+  });
 
   const {
     data: { session },
