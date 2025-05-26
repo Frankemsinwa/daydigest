@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ChromeIcon } from 'lucide-react'; // Using ChromeIcon as a stand-in for Google logo
+import { ChromeIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -48,7 +48,7 @@ export function SignUpForm() {
       email: values.email,
       password: values.password,
       options: {
-        // emailRedirectTo: `${window.location.origin}/auth/callback`, // For email confirmation
+        emailRedirectTo: `${window.location.origin}/auth/callback`, // Changed to /auth/callback
       },
     });
     
@@ -61,29 +61,30 @@ export function SignUpForm() {
         variant: 'destructive',
       });
     } else if (data.user) {
-      // User created in auth.users, now create a profile in public.users
       try {
+        // The database trigger public.handle_new_user should handle profile creation.
+        // If you don't have the trigger, you'd upsert here:
+        /*
         const { error: profileError } = await supabase
           .from('users')
           .upsert({
-            id: data.user.id, // This is the auth.users.id
+            id: data.user.id, 
             email: data.user.email,
-            is_pro: false, // Default to false on new sign-up
+            is_pro: false, 
           });
 
         if (profileError) {
           console.error('Error creating user profile:', profileError.message);
-          // Non-critical error for user, but log it.
-          // You might want a more robust error handling or retry mechanism here in a real app.
           toast({
             title: 'Profile Issue',
             description: 'Your account was created, but we had trouble setting up your profile. Please contact support if issues persist.',
-            variant: 'default', // Not 'destructive' as auth succeeded.
+            variant: 'default', 
             duration: 7000,
           });
         }
+        */
       } catch (e) {
-        console.error('Exception during user profile creation:', e);
+        console.error('Exception during potential user profile creation:', e);
          toast({
             title: 'Profile Exception',
             description: 'An unexpected error occurred while setting up your profile.',
@@ -92,33 +93,32 @@ export function SignUpForm() {
           });
       }
 
-      setIsLoading(false); // Set loading to false after profile creation attempt
+      setIsLoading(false); 
 
       if (data.user.identities && data.user.identities.length === 0 && !data.session) {
-        // This case can happen if "Confirm email" is enabled in Supabase settings and the user already exists but is unconfirmed.
+        // This case typically indicates the email is already registered but not confirmed with the current provider (e.g. email/pass)
+        // Or if email confirmation is required and it's the first time.
         toast({
-          title: 'Email Confirmation Required',
-          description: 'This email is already registered. Please check your inbox for a confirmation link, or try signing in.',
+          title: 'Confirmation Required or Email Exists',
+          description: 'Please check your email for a confirmation link. If already registered, try signing in.',
           variant: 'default',
           duration: 10000,
         });
-      } else if (data.session) {
+      } else if (data.session) { // User is immediately active (e.g., auto-confirm is on, or social login that doesn't need email confirm)
         toast({
           title: 'Sign Up Successful',
-          description: 'Welcome! You are now signed in.',
+          description: 'Welcome! Redirecting to dashboard...',
         });
-        router.push('/');
+        router.push('/dashboard');
         router.refresh();
-      } else if (data.user && !data.session) { // New user, email confirmation needed
+      } else if (data.user && !data.session) { // Standard email confirmation flow
          toast({
           title: 'Sign Up Successful!',
           description: 'Please check your email to confirm your account.',
           duration: 10000,
         });
-        // router.push('/check-email'); // Optionally redirect to a page asking to check email
       }
     } else {
-      // Should not happen if error is null and data.user is null, but as a fallback
       setIsLoading(false);
       toast({
         title: 'Sign Up Incomplete',
@@ -133,10 +133,10 @@ export function SignUpForm() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        // redirectTo: `${window.location.origin}/auth/callback`
+        redirectTo: `${window.location.origin}/auth/callback`, // Changed to /auth/callback
       },
     });
-    setIsGoogleLoading(false); // Typically redirect happens, so loading state might not be visible long
+    setIsGoogleLoading(false); 
 
     if (error) {
       toast({
@@ -145,8 +145,7 @@ export function SignUpForm() {
         variant: 'destructive',
       });
     }
-    // Supabase handles the redirect and session establishment.
-    // To create a user profile for Google OAuth, a database trigger is the best approach.
+    // No client-side redirect here, middleware will handle it after /auth/callback
   }
 
   return (
@@ -230,5 +229,3 @@ export function SignUpForm() {
     </Card>
   );
 }
-
-    

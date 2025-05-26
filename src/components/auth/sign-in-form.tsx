@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ChromeIcon } from 'lucide-react'; // Using ChromeIcon as a stand-in for Google logo
+import { ChromeIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -20,7 +20,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/lib/supabaseClient';
 import { useToast } from '@/hooks/use-toast';
 
@@ -60,10 +59,10 @@ export function SignInForm() {
     } else {
       toast({
         title: 'Sign In Successful',
-        description: 'Welcome back!',
+        description: 'Welcome back! Redirecting to dashboard...',
       });
-      router.push('/');
-      router.refresh(); // Refresh server components
+      router.push('/dashboard');
+      router.refresh(); // Important to refresh server components and re-evaluate auth state
     }
   }
 
@@ -72,9 +71,7 @@ export function SignInForm() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        // You might want to specify a redirectTo path if needed,
-        // e.g., redirectTo: `${window.location.origin}/auth/callback`
-        // However, Supabase usually handles this based on your project's URL config.
+        redirectTo: `${window.location.origin}/auth/callback`, // Changed to /auth/callback
       },
     });
     setIsGoogleLoading(false);
@@ -86,8 +83,7 @@ export function SignInForm() {
         variant: 'destructive',
       });
     }
-    // Supabase redirects to Google and then back to your app.
-    // If successful, the user session is handled by Supabase.
+    // No client-side redirect here, middleware will handle it after /auth/callback
   }
 
   return (
