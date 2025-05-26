@@ -28,23 +28,26 @@ export default function Sidebar({ user }: SidebarProps) {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push('/signin');
-    router.refresh(); // Ensure server components re-evaluate auth state
+    router.push('/signin'); // Still redirect to signin on logout, user can then go to homepage
+    router.refresh(); 
   };
 
   const menuItems = [
     { name: 'Home', icon: Home, href: '/dashboard' },
-    { name: 'Daily Summary', icon: BookText, href: '/dashboard#daily-summary' },
+    { name: 'Daily Summary', icon: BookText, href: '/dashboard#daily-summary' }, // Assuming IDs will be on dashboard sections
     { name: 'Focus Recommendations', icon: Target, href: '/dashboard#focus-recommendations' },
     { name: 'Reflection Prompts', icon: MessageSquareQuote, href: '/dashboard#reflection-prompts' },
-    { name: 'Insights/History', icon: BarChart3, href: '/dashboard/history' }, // Placeholder link
-    { name: 'Settings', icon: Settings, href: '/dashboard/settings' }, // Placeholder link
+    { name: 'Insights/History', icon: BarChart3, href: '/dashboard/history' }, 
+    { name: 'Settings', icon: Settings, href: '/dashboard/settings' }, 
   ];
 
   const getInitials = (email?: string | null) => {
     if (!email) return 'U';
     return email.substring(0, 2).toUpperCase();
   };
+
+  const displayName = user?.user_metadata?.full_name || user?.email || 'Guest User';
+  const avatarUrl = user?.user_metadata?.avatar_url;
 
   return (
     <aside className="w-64 bg-card text-card-foreground p-4 flex flex-col border-r border-border/70">
@@ -78,14 +81,14 @@ export default function Sidebar({ user }: SidebarProps) {
         </Button>
         <div className="flex items-center space-x-3 mt-4 pt-4 border-t border-border/70">
           <Avatar className="h-10 w-10">
-            <AvatarImage src={user?.user_metadata?.avatar_url} alt={user?.email || 'User'} data-ai-hint="person avatar" />
+            {avatarUrl ? <AvatarImage src={avatarUrl} alt={displayName} data-ai-hint="person avatar" /> : null}
             <AvatarFallback>
               {user?.email ? getInitials(user.email) : <UserCircle className="h-5 w-5" />}
             </AvatarFallback>
           </Avatar>
           <div>
             <p className="text-sm font-medium text-foreground truncate">
-              {user?.user_metadata?.full_name || user?.email || 'User'}
+              {displayName}
             </p>
             {/* <p className="text-xs text-muted-foreground">Pro Member</p> */}
           </div>

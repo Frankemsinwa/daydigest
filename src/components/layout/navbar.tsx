@@ -1,6 +1,6 @@
 
 import Link from 'next/link';
-import { Brain, Menu, HelpCircle } from 'lucide-react'; // Added HelpCircle for potential future use, not used yet.
+import { Brain, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription, SheetHeader } from '@/components/ui/sheet';
 
@@ -27,7 +27,7 @@ export function Navbar() {
              <Link href="/#faq">FAQ</Link>
            </Button>
            <Button asChild className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
-             <Link href="/signup">Get Started</Link>
+             <Link href="/dashboard">Get Started</Link>
            </Button>
         </nav>
 
@@ -46,29 +46,39 @@ export function Navbar() {
               </SheetHeader>
               <nav className="flex flex-col space-y-4 mt-8">
                 <SheetClose asChild>
-                  <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary" asChild>
-                    <Link href="/#features">Features</Link>
-                  </Button>
+                  <Link href="/#features" passHref legacyBehavior>
+                    <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary">
+                      Features
+                    </Button>
+                  </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary" asChild>
-                    <Link href="/#testimonials">Testimonials</Link>
-                  </Button>
+                  <Link href="/#testimonials" passHref legacyBehavior>
+                    <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary">
+                      Testimonials
+                    </Button>
+                  </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary" asChild>
-                    <Link href="/#pricing">Pricing</Link>
-                  </Button>
+                  <Link href="/#pricing" passHref legacyBehavior>
+                    <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary">
+                      Pricing
+                    </Button>
+                  </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary" asChild>
-                    <Link href="/#faq">FAQ</Link>
-                  </Button>
+                  <Link href="/#faq" passHref legacyBehavior>
+                    <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary">
+                      FAQ
+                    </Button>
+                  </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Button className="justify-center text-lg rounded-full bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
-                    <Link href="/signup">Get Started</Link>
-                  </Button>
+                  <Link href="/dashboard" passHref legacyBehavior>
+                    <Button className="justify-center text-lg rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                      Get Started
+                    </Button>
+                  </Link>
                 </SheetClose>
               </nav>
             </SheetContent>

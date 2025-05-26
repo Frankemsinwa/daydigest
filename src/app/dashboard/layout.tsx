@@ -1,12 +1,13 @@
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { redirect } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server'; // Using server client for auth check
+// import { redirect } from 'next/navigation'; // No longer redirecting
+// import { createClient } from '@/lib/supabase/server'; // No longer checking auth here
 
 import Sidebar from '@/components/dashboard/sidebar';
 import TopBar from '@/components/dashboard/top-bar';
 import { Toaster } from "@/components/ui/toaster";
+import type { User } from '@supabase/supabase-js';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,15 +21,18 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createClient();
+  // const supabase = createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // const {
+  //   data: { user },
+  // } = await supabase.auth.getUser();
 
-  if (!user) {
-    redirect('/signin');
-  }
+  // if (!user) {
+  //   redirect('/signin');
+  // }
+  
+  // For now, user will be null as auth is bypassed
+  const user: User | null = null; 
 
   return (
     <div className="flex h-screen bg-background text-foreground">
