@@ -5,7 +5,7 @@ import type { Metadata } from 'next'; // Metadata type can still be used if need
 import { Inter } from 'next/font/google';
 import { useState, useEffect } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile'; // Hook to check for mobile
-import { Sheet, SheetContent } from '@/components/ui/sheet'; // ShadCN Sheet components
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet'; // ShadCN Sheet components
 
 import Sidebar from '@/components/dashboard/sidebar';
 import TopBar from '@/components/dashboard/top-bar';
@@ -43,6 +43,10 @@ export default function DashboardLayout({
         <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
           {/* Trigger is in TopBar */}
           <SheetContent side="left" className="p-0 w-64 bg-card border-r border-border/70">
+            <SheetHeader className="sr-only"> {/* Visually hidden header for accessibility */}
+              <SheetTitle>Dashboard Menu</SheetTitle>
+              <SheetDescription>Main navigation for the dashboard.</SheetDescription>
+            </SheetHeader>
             <Sidebar 
               user={user} 
               onLinkClick={() => setIsMobileMenuOpen(false)} 
