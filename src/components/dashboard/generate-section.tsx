@@ -100,15 +100,18 @@ export default function GenerateSection() {
     <section id="generate-ai" className="scroll-mt-20">
       <h2 className="text-2xl font-semibold text-foreground mb-4">Generate with AI</h2>
       <Tabs defaultValue="daily-summary" className="w-full">
-        <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 mb-4">
-          <TabsTrigger value="daily-summary" className="flex items-center justify-center gap-2 whitespace-normal text-center">
-            <BookText className="h-4 w-4 flex-shrink-0" /> Generate Daily Summary
+        <TabsList className="flex w-full items-center justify-around rounded-md bg-muted p-1 text-muted-foreground mb-4 md:grid md:grid-cols-3">
+          <TabsTrigger value="daily-summary" className="flex items-center justify-center gap-2 whitespace-normal text-center px-2 py-1.5 md:px-3">
+            <BookText className="h-5 w-5 md:h-4 md:w-4 flex-shrink-0" />
+            <span className="hidden md:inline">Generate Daily Summary</span>
           </TabsTrigger>
-          <TabsTrigger value="focus-recommendations" className="flex items-center justify-center gap-2 whitespace-normal text-center">
-            <Target className="h-4 w-4 flex-shrink-0" /> Get Focus Recommendations
+          <TabsTrigger value="focus-recommendations" className="flex items-center justify-center gap-2 whitespace-normal text-center px-2 py-1.5 md:px-3">
+            <Target className="h-5 w-5 md:h-4 md:w-4 flex-shrink-0" />
+            <span className="hidden md:inline">Get Focus Recommendations</span>
           </TabsTrigger>
-          <TabsTrigger value="reflection-prompt" className="flex items-center justify-center gap-2 whitespace-normal text-center">
-            <MessageSquareQuote className="h-4 w-4 flex-shrink-0" /> Generate Reflection Prompt
+          <TabsTrigger value="reflection-prompt" className="flex items-center justify-center gap-2 whitespace-normal text-center px-2 py-1.5 md:px-3">
+            <MessageSquareQuote className="h-5 w-5 md:h-4 md:w-4 flex-shrink-0" />
+            <span className="hidden md:inline">Generate Reflection Prompt</span>
           </TabsTrigger>
         </TabsList>
 
@@ -247,5 +250,6 @@ export default function GenerateSection() {
     </section>
   );
 }
+    
 
     
