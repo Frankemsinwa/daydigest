@@ -59,7 +59,7 @@ export default function Sidebar({ user, onLinkClick }: SidebarProps) {
   };
 
   return (
-    <aside className="w-full h-full bg-card text-card-foreground p-4 flex flex-col border-r border-border/70">
+    <aside className="w-64 h-full bg-card text-card-foreground p-4 flex flex-col border-r border-border/70 shrink-0"> {/* Changed w-full to w-64 and added shrink-0 */}
       {/* No explicit width here, SheetContent or parent div controls it */}
       <div className="flex items-center space-x-2 mb-8">
         <Brain className="h-8 w-8 text-primary" />
