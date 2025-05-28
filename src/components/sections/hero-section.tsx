@@ -3,15 +3,9 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import heroImage from "@/assets/img/hero.jpg"; // Assuming the new image is saved here
+import heroImage from "@/assets/img/hero.jpg"; 
 
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-
-const Spline = dynamic(() => import('@splinetool/react-spline'), {
-  ssr: false,
-  loading: () => <div className="absolute inset-0 w-full h-full bg-transparent" aria-label="Loading 3D animation..." />,
-});
 
 
 export function HeroSection() {
