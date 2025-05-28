@@ -30,7 +30,7 @@ export function HeroSection() {
             Unlock Your Day&apos;s Potential with DayDigest
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-700 [animation-delay:300ms]">
-          DayDigest makes it easy to pause, reflect, and understand your day — so you can feel more focused and in control.
+          DayDigest makes it easy to pause, reflect, and understand your day  so you can feel more focused and in control.
 
           </p>
           <Button 
