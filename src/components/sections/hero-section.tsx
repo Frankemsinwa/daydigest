@@ -3,8 +3,8 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-// import heroImage from "@/assets/img/hero.png"; // Assuming the new image is saved here
-// import MovingStarsBackground from "@/components/effects/moving-stars-background";
+import heroImage from "@/assets/img/hero.jpg"; 
+
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 
@@ -17,20 +17,16 @@ const Spline = dynamic(() => import('@splinetool/react-spline'), {
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden py-20 md:py-32 bg-transparent">
-      {/* <MovingStarsBackground /> */}
-      {/* Spline Background */}
-      <div className="absolute inset-0 w-full h-full -z-30 opacity-70">
-        <Spline scene="https://prod.spline.design/m1BbjAhmBLe6DNxJ/scene.splinecode" />
-      </div>
+     
       
       {/* Bright Blur Light Flare */}
       <div
         aria-hidden="true"
         className="absolute -top-80 -left-80 w-[700px] h-[700px]
-                   bg-primary opacity-[0.06]
+                   bg-primary opacity-[0.08]
                    rounded-full
                    blur-[120px]
-                   pointer-events-none -z-20" // Adjusted z-index
+                   pointer-events-none " // 
       />
 
       {/* Main content container */}
@@ -52,7 +48,7 @@ export function HeroSection() {
         </div>
         <div className="relative aspect-video rounded-xl overflow-hidden group border border-primary/30 shadow-[0_0_35px_2px_hsl(var(--primary)/0.3)] hover:shadow-[0_0_45px_5px_hsl(var(--primary)/0.4)] transition-shadow duration-300 ease-out animate-in fade-in zoom-in-95 [animation-delay:400ms]">
            <Image
-            src="https://placehold.co/600x400.png" 
+            src={heroImage} 
             alt="Stylized brain with a clock"
             layout="fill"
             objectFit="cover" // Changed back to cover as per earlier request for full width
