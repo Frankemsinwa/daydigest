@@ -1,4 +1,3 @@
-
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
@@ -30,6 +29,8 @@ export async function middleware(req: NextRequest) {
     data: { session }, // Check for an active session first
   } = await supabase.auth.getSession();
 
+  // Log the session for debugging
+  console.log('Session:', session);
 
   const authRoutes = ['/signin', '/signup'];
   const protectedRoute = '/dashboard';
@@ -55,6 +56,9 @@ export async function middleware(req: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  // Log the user for debugging
+  console.log('User:', user);
 
   if (user) {
     // If authenticated user tries to access auth pages, redirect to dashboard
