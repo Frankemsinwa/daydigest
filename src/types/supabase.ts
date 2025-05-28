@@ -84,41 +84,6 @@ export type Database = {
         }
         Relationships: []
       }
-      reflections: {
-        Row: {
-          created_at: string | null
-          focus: string | null
-          id: string | null
-          summary: string | null
-          text: string | null
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          focus?: string | null
-          id?: string | null
-          summary?: string | null
-          text?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          focus?: string | null
-          id?: string | null
-          summary?: string | null
-          text?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "reflections_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       users: {
         Row: {
           created_at: string | null
