@@ -5,8 +5,9 @@ import type { NextRequest } from 'next/server';
 import type { Database } from '@/types/supabase';
 
 export async function middleware(req: NextRequest) {
-  const res = NextResponse.next(); // Response object to be potentially modified with cookies
+  const res = NextResponse.next(); // Create a response object to potentially modify
 
+  // Initialize Supabase client, configured to use cookies from req and set them on res
   const supabase = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -25,53 +26,52 @@ export async function middleware(req: NextRequest) {
     }
   );
 
+  const {
+    data: { session }, // Check for an active session first
+  } = await supabase.auth.getSession();
+
+
   const authRoutes = ['/signin', '/signup'];
   const protectedRoute = '/dashboard';
+  const callbackPath = '/auth/callback';
 
-  // Handle the /auth/callback route FIRST
-  // This is crucial because this is where the session is established after OAuth or email confirm.
-  if (req.nextUrl.pathname === '/auth/callback') {
+  // Handle the /auth/callback route FIRST to establish the session
+  if (req.nextUrl.pathname === callbackPath) {
     const code = req.nextUrl.searchParams.get('code');
     if (code) {
       // Exchange the code for a session.
-      // This will set the session cookies on the `res` object via the cookie handlers.
+      // This will set the session cookies on the `res` object.
       await supabase.auth.exchangeCodeForSession(code);
     }
-    
-    // IMPORTANT: Clone the URL to avoid modifying the original request URL object if it's used later.
-    const redirectUrl = new URL(req.url); 
-    redirectUrl.pathname = protectedRoute; // Set path to dashboard
-    redirectUrl.searchParams.delete('code'); // Clean up the 'code' query parameter from the URL
-    
+    // Construct the redirect URL to the dashboard, removing the code.
+    const redirectUrl = req.nextUrl.clone(); // Clone to safely modify
+    redirectUrl.pathname = protectedRoute;
+    redirectUrl.searchParams.delete('code');
     // Redirect to the dashboard, ensuring cookies set by exchangeCodeForSession are included.
     return NextResponse.redirect(redirectUrl, { headers: res.headers });
   }
 
-  // For all OTHER routes, now attempt to get the user.
-  // This relies on cookies already being present from previous interactions or the callback.
+  // Now, get the user from the (potentially newly established) session
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (user) {
-    // If an authenticated user tries to access auth pages (signin/signup),
-    // redirect them to the dashboard.
+    // If authenticated user tries to access auth pages, redirect to dashboard
     if (authRoutes.includes(req.nextUrl.pathname)) {
-      const redirectUrl = new URL(protectedRoute, req.url);
-      return NextResponse.redirect(redirectUrl, { headers: res.headers });
+      return NextResponse.redirect(new URL(protectedRoute, req.url), { headers: res.headers });
     }
   } else {
-    // If an unauthenticated user tries to access a protected route,
-    // redirect them to the signin page.
+    // If unauthenticated user tries to access a protected route, redirect to signin
+    // Check if the current path STARTS WITH the protected route (e.g. /dashboard/settings)
     if (req.nextUrl.pathname.startsWith(protectedRoute)) {
-      const redirectFrom = req.nextUrl.pathname; // Keep track of where they were trying to go
-      const redirectUrl = new URL(`/signin?redirectedFrom=${encodeURIComponent(redirectFrom)}`, req.url);
-      return NextResponse.redirect(redirectUrl, { headers: res.headers });
+      const redirectFrom = req.nextUrl.pathname;
+      return NextResponse.redirect(new URL(`/signin?redirectedFrom=${encodeURIComponent(redirectFrom)}`, req.url), { headers: res.headers });
     }
   }
 
-  // Allow the request to proceed.
-  // If supabase.auth.getUser() refreshed a token, `res` will have the updated Set-Cookie header.
+  // Allow the request to proceed. If getSession() refreshed the token,
+  // `res` will have the updated cookies and they will be set.
   return res;
 }
 

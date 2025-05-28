@@ -1,18 +1,13 @@
 
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import { redirect } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server'; // Using server client for auth check
-
-import Sidebar from '@/components/dashboard/sidebar';
-import TopBar from '@/components/dashboard/top-bar';
-import { Toaster } from "@/components/ui/toaster";
-
-const inter = Inter({ subsets: ['latin'] });
+import { createClient } from '@/lib/supabase/server';
+import DashboardClientLayout from './dashboard-client-layout'; // New client component
+import type { Metadata } from 'next';
+import type { User } from '@supabase/supabase-js';
 
 export const metadata: Metadata = {
   title: 'DayDigest Dashboard',
-  description: 'Manage your daily reflections and insights.',
+  description: 'Your personal DayDigest dashboard.',
 };
 
 export default async function DashboardLayout({
@@ -21,25 +16,22 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const supabase = createClient();
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect('/signin');
+    // Ensure redirect is called correctly for Next.js App Router
+    return redirect('/signin');
   }
+  
+  // Ensure the user object passed to client components is serializable and matches expected type
+  // Supabase User object should be fine.
+  const typedUser = user as User | null;
 
   return (
-    <div className="flex h-screen bg-background text-foreground">
-      <Sidebar user={user} />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <TopBar user={user} />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-background p-4 md:p-6 lg:p-8">
-          {children}
-        </main>
-      </div>
-      <Toaster />
-    </div>
+    <DashboardClientLayout user={typedUser}>
+      {children}
+    </DashboardClientLayout>
   );
 }
