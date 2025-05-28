@@ -2,14 +2,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bell, Menu } from 'lucide-react'; // Added Menu icon
+import { Bell, Menu } from 'lucide-react'; 
 import { Button } from '@/components/ui/button';
 import type { User } from '@supabase/supabase-js';
 
 interface TopBarProps {
   user: User | null;
-  isMobile: boolean; // Prop to know if it's mobile view
-  onMenuButtonClick: () => void; // Function to open mobile menu
+  isMobile: boolean; 
+  onMenuButtonClick: () => void; 
 }
 
 export default function TopBar({ user, isMobile, onMenuButtonClick }: TopBarProps) {
@@ -26,8 +26,13 @@ export default function TopBar({ user, isMobile, onMenuButtonClick }: TopBarProp
 
   const getFirstName = () => {
     if (!user) return 'Guest';
-    if (user?.user_metadata?.full_name) return user.user_metadata.full_name.split(' ')[0];
-    if (user?.email) return user.email.split('@')[0];
+    if (user?.user_metadata?.full_name) {
+      const nameParts = user.user_metadata.full_name.split(' ');
+      return nameParts[0];
+    }
+    if (user?.email) {
+      return user.email.split('@')[0];
+    }
     return 'User';
   }
 
@@ -39,7 +44,7 @@ export default function TopBar({ user, isMobile, onMenuButtonClick }: TopBarProp
             variant="ghost" 
             size="icon" 
             onClick={onMenuButtonClick} 
-            className="text-muted-foreground hover:text-primary md:hidden" // md:hidden to ensure it only shows on mobile
+            className="text-muted-foreground hover:text-primary md:hidden"
           >
             <Menu className="h-6 w-6" />
             <span className="sr-only">Open menu</span>
@@ -62,4 +67,3 @@ export default function TopBar({ user, isMobile, onMenuButtonClick }: TopBarProp
     </header>
   );
 }
-

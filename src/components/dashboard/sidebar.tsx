@@ -16,7 +16,6 @@ import {
   LogOut,
   Brain,
   UserCircle,
-  X // Added X for potential close button if needed inside, though Sheet has its own
 } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 
@@ -32,21 +31,22 @@ export default function Sidebar({ user, onLinkClick }: SidebarProps) {
     await supabase.auth.signOut();
     if (onLinkClick) onLinkClick(); // Close mobile menu if open
     router.push('/signin'); 
-    router.refresh(); 
+    router.refresh(); // Important to refresh server components and re-evaluate auth state
   };
 
   const menuItems = [
     { name: 'Home', icon: Home, href: '/dashboard' },
-    { name: 'Daily Summary', icon: BookText, href: '/dashboard#daily-summary' },
-    { name: 'Focus Recommendations', icon: Target, href: '/dashboard#focus-recommendations' },
-    { name: 'Reflection Prompts', icon: MessageSquareQuote, href: '/dashboard#reflection-prompts' },
-    { name: 'Insights/History', icon: BarChart3, href: '/dashboard/history' }, 
-    { name: 'Settings', icon: Settings, href: '/dashboard/settings' }, 
+    { name: 'Daily Summary', icon: BookText, href: '/dashboard#generate-ai' }, // Pointing to the section with tabs
+    { name: 'Focus Recommendations', icon: Target, href: '/dashboard#generate-ai' },
+    { name: 'Reflection Prompts', icon: MessageSquareQuote, href: '/dashboard#generate-ai' },
+    { name: 'Insights/History', icon: BarChart3, href: '/dashboard#history' }, 
+    { name: 'Settings', icon: Settings, href: '/dashboard#quick-notes' }, // Placeholder, can be /dashboard/settings later
   ];
 
   const getInitials = (email?: string | null) => {
     if (!email) return 'U';
-    return email.substring(0, 2).toUpperCase();
+    const nameParts = email.split('@')[0];
+    return nameParts.substring(0, 2).toUpperCase();
   };
 
   const displayName = user?.user_metadata?.full_name || user?.email || 'Guest User';
@@ -59,8 +59,7 @@ export default function Sidebar({ user, onLinkClick }: SidebarProps) {
   };
 
   return (
-    <aside className="w-64 h-full bg-card text-card-foreground p-4 flex flex-col border-r border-border/70 shrink-0"> {/* Changed w-full to w-64 and added shrink-0 */}
-      {/* No explicit width here, SheetContent or parent div controls it */}
+    <aside className="w-64 h-full bg-card text-card-foreground p-4 flex flex-col border-r border-border/70 shrink-0">
       <div className="flex items-center space-x-2 mb-8">
         <Brain className="h-8 w-8 text-primary" />
         <span className="text-2xl font-bold text-foreground">DayDigest</span>
@@ -72,7 +71,7 @@ export default function Sidebar({ user, onLinkClick }: SidebarProps) {
             variant="ghost"
             className="w-full justify-start text-muted-foreground hover:text-primary hover:bg-primary/10"
             asChild
-            onClick={handleLinkClick} // Close sheet on link click
+            onClick={handleLinkClick} 
           >
             <Link href={item.href}>
               <item.icon className="mr-3 h-5 w-5" />
@@ -85,7 +84,7 @@ export default function Sidebar({ user, onLinkClick }: SidebarProps) {
         <Button
           variant="ghost"
           className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-          onClick={handleLogout} // Logout also calls onLinkClick logic now
+          onClick={handleLogout}
         >
           <LogOut className="mr-3 h-5 w-5" />
           Logout
@@ -108,4 +107,3 @@ export default function Sidebar({ user, onLinkClick }: SidebarProps) {
     </aside>
   );
 }
-
