@@ -5,7 +5,7 @@ import * as React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { useRouter } from 'next/navigation';
+// useRouter is no longer needed for the primary redirect
 import Link from 'next/link';
 import { ChromeIcon } from 'lucide-react';
 
@@ -29,7 +29,6 @@ const formSchema = z.object({
 });
 
 export function SignInForm() {
-  const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = React.useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = React.useState(false);
@@ -61,8 +60,9 @@ export function SignInForm() {
         title: 'Sign In Successful',
         description: 'Welcome back! Redirecting to dashboard...',
       });
-      router.push('/dashboard');
-      router.refresh(); // Important to refresh server components and re-evaluate auth state
+      // Changed to window.location.href
+      window.location.href = "/dashboard";
+      // router.refresh(); // No longer needed with full page reload
     }
   }
 
@@ -71,12 +71,13 @@ export function SignInForm() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`, // Changed to /auth/callback
+        redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
-    setIsGoogleLoading(false);
+    // setIsGoogleLoading(false); // Keep loading state until redirect happens
 
     if (error) {
+      setIsGoogleLoading(false); // Reset loading if error occurs before redirect
       toast({
         title: 'Google Sign-In Failed',
         description: error.message,
