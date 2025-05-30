@@ -27,7 +27,7 @@ export function Navbar() {
              <Link href="/#faq">FAQ</Link>
            </Button>
            <Button asChild className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
-             <Link href="/signup">Get Started</Link>
+             <Link href="/auth/sign-up">Get Started</Link>
            </Button>
         </nav>
 
@@ -74,7 +74,7 @@ export function Navbar() {
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Link href="/signup" passHref legacyBehavior>
+                  <Link href="/auth/sign-up" passHref legacyBehavior>
                     <Button className="justify-center text-lg rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
                       Get Started
                     </Button>
