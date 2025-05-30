@@ -1,7 +1,5 @@
 
 'use client';
-// This page is likely provided by the shadcn-ui Supabase recipe.
-// We'll ensure it uses the <Auth> component for a consistent experience.
 
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
@@ -20,14 +18,15 @@ export default function UpdatePasswordPage() {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
-        // The Auth component will handle the UI for password update
+        // The Auth component will handle the UI for password update.
         // If the user somehow lands here without a recovery token,
-        // or after updating, redirect them.
-        if (!session?.user) {
-           // router.push('/auth/login'); // or to a message page
+        // or after updating, this effect can help redirect.
+        if (!session?.user && !window.location.hash.includes('type=recovery')) {
+           // Consider redirecting to login if no recovery state is apparent
+           // router.push('/auth/login');
         }
-      } else if (event === "USER_UPDATED") {
-        // Password has been updated, redirect to dashboard
+      } else if (event === "USER_UPDATED" && session) {
+        // Password has been updated successfully, and we have a session.
         router.push('/dashboard');
       }
     });

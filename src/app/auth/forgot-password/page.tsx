@@ -1,8 +1,5 @@
 
 'use client';
-// This page is likely provided by the shadcn-ui Supabase recipe.
-// We'll assume it uses the Supabase Auth UI or a similar mechanism.
-// For consistency, let's ensure it also uses the centered layout and <Auth> component.
 
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
@@ -92,6 +89,8 @@ export default function ForgotPasswordPage() {
               }}
               view="forgotten_password"
               showLinks={true}
+              // The redirectTo prop for `resetPasswordForEmail` is configured in Supabase dashboard email templates.
+              // Supabase sends an email with a link like: {{ .SiteURL }}/auth/update-password?token={{ .TokenHash }}&type=recovery
               localization={{
                 variables: {
                   sign_in: {

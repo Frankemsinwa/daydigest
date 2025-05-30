@@ -3,7 +3,7 @@
 
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
-import { createClient } from '@/lib/supabase/client'; // Use the client from the recipe
+import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import { Brain } from 'lucide-react';
@@ -34,7 +34,7 @@ export default function LoginPage() {
                   default: {
                     colors: {
                       brand: 'hsl(var(--primary))',
-                      brandAccent: 'hsl(var(--primary-foreground))', // Or a slightly darker primary
+                      brandAccent: 'hsl(var(--primary-foreground))',
                       brandButtonText: 'hsl(var(--primary-foreground))',
                       defaultButtonBackground: 'hsl(var(--secondary))',
                       defaultButtonBackgroundHover: 'hsl(var(--accent))',
@@ -50,7 +50,7 @@ export default function LoginPage() {
                       messageText: 'hsl(var(--muted-foreground))',
                       messageTextDanger: 'hsl(var(--destructive))',
                       anchorTextColor: 'hsl(var(--primary))',
-                      anchorTextColorHover: 'hsl(var(--primary))', // Adjust if you want a different hover
+                      anchorTextColorHover: 'hsl(var(--primary))',
                     },
                     space: {
                       spaceSmall: '4px',
