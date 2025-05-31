@@ -5,6 +5,8 @@ import DashboardClientLayout from './dashboard-client-layout';
 import type { Metadata } from 'next';
 import type { User } from '@supabase/supabase-js';
 
+export const dynamic = 'force-dynamic'; // Ensure dynamic rendering for authentication checks
+
 export const metadata: Metadata = {
   title: 'DayDigest Dashboard',
   description: 'Your personal DayDigest dashboard.',
