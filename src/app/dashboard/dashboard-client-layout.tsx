@@ -2,7 +2,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { User } from '@supabase/supabase-js';
+// User type import removed as user prop is removed/nulled
+// import type { User } from '@supabase/supabase-js'; 
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import Sidebar from '@/components/dashboard/sidebar';
@@ -11,10 +12,10 @@ import { Toaster } from "@/components/ui/toaster";
 
 export default function DashboardClientLayout({
   children,
-  user,
+  user, // User prop is now optional or can be removed if Sidebar/TopBar handle null
 }: {
   children: React.ReactNode;
-  user: User | null;
+  user: any | null; // Changed to any or a more generic type if needed, or simply null
 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
@@ -35,18 +36,18 @@ export default function DashboardClientLayout({
               <SheetDescription>Main navigation for the dashboard.</SheetDescription>
             </SheetHeader>
             <Sidebar
-              user={user}
+              user={null} // Passing null as user prop is removed
               onLinkClick={() => setIsMobileMenuOpen(false)}
             />
           </SheetContent>
         </Sheet>
       ) : (
-        <Sidebar user={user} />
+        <Sidebar user={null} /> // Passing null
       )}
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <TopBar
-          user={user}
+          user={null} // Passing null
           isMobile={isMobile || false}
           onMenuButtonClick={() => setIsMobileMenuOpen(true)}
         />

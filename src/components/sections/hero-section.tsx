@@ -37,7 +37,7 @@ export function HeroSection() {
             className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform duration-300 hover:scale-105 rounded-full animate-in fade-in zoom-in-95 duration-700 [animation-delay:600ms]" 
             asChild
           >
-            <Link href="/auth/sign-up">Start Your Journey</Link> 
+            <Link href="/dashboard">Start Your Journey</Link> {/* Updated Link */}
           </Button>
         </div>
         <div className="relative aspect-video rounded-xl overflow-hidden group border border-primary/30 shadow-[0_0_35px_2px_hsl(var(--primary)/0.3)] hover:shadow-[0_0_45px_5px_hsl(var(--primary)/0.4)] transition-shadow duration-300 ease-out animate-in fade-in zoom-in-95 [animation-delay:400ms]">

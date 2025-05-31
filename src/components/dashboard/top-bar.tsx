@@ -2,14 +2,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bell, Menu } from 'lucide-react'; 
+import { Bell, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import type { User } from '@supabase/supabase-js';
+// User type import removed
+// import type { User } from '@supabase/supabase-js';
 
 interface TopBarProps {
-  user: User | null;
-  isMobile: boolean; 
-  onMenuButtonClick: () => void; 
+  user: any | null; // Prop kept for structure, will be null
+  isMobile: boolean;
+  onMenuButtonClick: () => void;
 }
 
 export default function TopBar({ user, isMobile, onMenuButtonClick }: TopBarProps) {
@@ -24,26 +25,17 @@ export default function TopBar({ user, isMobile, onMenuButtonClick }: TopBarProp
     }));
   }, []);
 
-  const getFirstName = () => {
-    if (!user) return 'Guest';
-    if (user?.user_metadata?.full_name) {
-      const nameParts = user.user_metadata.full_name.split(' ');
-      return nameParts[0];
-    }
-    if (user?.email) {
-      return user.email.split('@')[0];
-    }
-    return 'User';
-  }
+  // Simplified welcome message
+  const welcomeMessage = 'Welcome to DayDigest!';
 
   return (
     <header className="h-16 bg-card border-b border-border/70 px-4 md:px-6 flex items-center justify-between shrink-0">
       <div className="flex items-center gap-4">
         {isMobile && (
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={onMenuButtonClick} 
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onMenuButtonClick}
             className="text-muted-foreground hover:text-primary md:hidden"
           >
             <Menu className="h-6 w-6" />
@@ -52,7 +44,7 @@ export default function TopBar({ user, isMobile, onMenuButtonClick }: TopBarProp
         )}
         <div>
           <h1 className="text-xl font-semibold text-foreground">
-            Welcome back, {getFirstName()}!
+            {welcomeMessage}
           </h1>
           <p className="text-sm text-muted-foreground">{currentDate || 'Loading date...'}</p>
         </div>
@@ -62,7 +54,6 @@ export default function TopBar({ user, isMobile, onMenuButtonClick }: TopBarProp
           <Bell className="h-5 w-5" />
           <span className="sr-only">Notifications</span>
         </Button>
-        {/* UserMenu could go here if needed */}
       </div>
     </header>
   );
