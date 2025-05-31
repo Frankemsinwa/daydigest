@@ -1,82 +1,98 @@
+
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import type { Database } from '@/types/supabase';
+import { NextResponse, type NextRequest } from 'next/server';
 
-export async function middleware(req: NextRequest) {
-  const res = NextResponse.next(); // Create a response object to potentially modify
+export async function middleware(request: NextRequest) {
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
 
-  // Initialize Supabase client, configured to use cookies from req and set them on res
-  const supabase = createServerClient<Database>(
+  const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         get(name: string) {
-          return req.cookies.get(name)?.value;
+          return request.cookies.get(name)?.value;
         },
         set(name: string, value: string, options: CookieOptions) {
-          res.cookies.set({ name, value, ...options });
+          request.cookies.set({
+            name,
+            value,
+            ...options,
+          });
+          response = NextResponse.next({
+            request: {
+              headers: request.headers,
+            },
+          });
+          response.cookies.set({
+            name,
+            value,
+            ...options,
+          });
         },
         remove(name: string, options: CookieOptions) {
-          res.cookies.set({ name, value: '', ...options });
+          request.cookies.set({
+            name,
+            value: '',
+            ...options,
+          });
+          response = NextResponse.next({
+            request: {
+              headers: request.headers,
+            },
+          });
+          response.cookies.set({
+            name,
+            value: '',
+            ...options,
+          });
         },
       },
     }
   );
 
   const {
-    data: { session }, // Check for an active session first
+    data: { session },
   } = await supabase.auth.getSession();
 
-  // Log the session for debugging
-  console.log('Session:', session);
+  const { pathname } = request.nextUrl;
 
-  const authRoutes = ['/signin', '/signup'];
-  const protectedRoute = '/dashboard';
-  const callbackPath = '/auth/callback';
-
-  // Handle the /auth/callback route FIRST to establish the session
-  if (req.nextUrl.pathname === callbackPath) {
-    const code = req.nextUrl.searchParams.get('code');
+  // Handle auth callback
+  if (pathname === '/auth/callback') {
+    const code = request.nextUrl.searchParams.get('code');
     if (code) {
-      // Exchange the code for a session.
-      // This will set the session cookies on the `res` object.
       await supabase.auth.exchangeCodeForSession(code);
     }
-    // Construct the redirect URL to the dashboard, removing the code.
-    const redirectUrl = req.nextUrl.clone(); // Clone to safely modify
-    redirectUrl.pathname = protectedRoute;
-    redirectUrl.searchParams.delete('code');
-    // Redirect to the dashboard, ensuring cookies set by exchangeCodeForSession are included.
-    return NextResponse.redirect(redirectUrl, { headers: res.headers });
+    // Redirect to dashboard after successful auth or if already authenticated
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = '/dashboard';
+    redirectUrl.search = ''; // Clear any query params like 'code'
+    return NextResponse.redirect(redirectUrl);
   }
 
-  // Now, get the user from the (potentially newly established) session
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  // Log the user for debugging
-  console.log('User:', user);
-
-  if (user) {
-    // If authenticated user tries to access auth pages, redirect to dashboard
-    if (authRoutes.includes(req.nextUrl.pathname)) {
-      return NextResponse.redirect(new URL(protectedRoute, req.url), { headers: res.headers });
+  // If user is authenticated
+  if (session) {
+    // Redirect away from auth pages if logged in
+    if (pathname.startsWith('/auth/login') || pathname.startsWith('/auth/sign-up') || pathname.startsWith('/auth/forgot-password') || pathname.startsWith('/auth/update-password')) {
+      return NextResponse.redirect(new URL('/dashboard', request.url));
+    }
+    // Allow access to protected routes like /dashboard
+    if (pathname.startsWith('/dashboard') || pathname.startsWith('/protected')) {
+      return response;
     }
   } else {
-    // If unauthenticated user tries to access a protected route, redirect to signin
-    // Check if the current path STARTS WITH the protected route (e.g. /dashboard/settings)
-    if (req.nextUrl.pathname.startsWith(protectedRoute)) {
-      const redirectFrom = req.nextUrl.pathname;
-      return NextResponse.redirect(new URL(`/signin?redirectedFrom=${encodeURIComponent(redirectFrom)}`, req.url), { headers: res.headers });
+    // If user is not authenticated
+    // Protect dashboard and other protected routes
+    if (pathname.startsWith('/dashboard') || pathname.startsWith('/protected')) {
+      return NextResponse.redirect(new URL('/auth/login', request.url));
     }
   }
 
-  // Allow the request to proceed. If getSession() refreshed the token,
-  // `res` will have the updated cookies and they will be set.
-  return res;
+  return response;
 }
 
 export const config = {
@@ -86,6 +102,7 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
+     * - public assets (images, etc.)
      * Feel free to modify this pattern to include more paths.
      */
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',

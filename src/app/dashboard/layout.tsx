@@ -1,9 +1,11 @@
 
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import DashboardClientLayout from './dashboard-client-layout'; // New client component
+import DashboardClientLayout from './dashboard-client-layout';
 import type { Metadata } from 'next';
 import type { User } from '@supabase/supabase-js';
+
+export const dynamic = 'force-dynamic'; // Ensure dynamic rendering for authentication checks
 
 export const metadata: Metadata = {
   title: 'DayDigest Dashboard',
@@ -15,18 +17,15 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createClient();
+  const supabase = createClient(); // Ensure this is the server client
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    // Ensure redirect is called correctly for Next.js App Router
-    return redirect('/signin');
+    return redirect('/auth/login'); // Redirect to the new login path
   }
   
-  // Ensure the user object passed to client components is serializable and matches expected type
-  // Supabase User object should be fine.
   const typedUser = user as User | null;
 
   return (
