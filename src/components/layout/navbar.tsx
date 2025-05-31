@@ -1,8 +1,9 @@
 
 import Link from 'next/link';
 import { Brain, Menu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription, SheetHeader } from '@/components/ui/sheet';
+import { cn } from '@/lib/utils';
 
 export function Navbar() {
   return (
@@ -12,7 +13,7 @@ export function Navbar() {
           <Brain className="h-7 w-7 text-foreground" />
           <span className="text-2xl font-bold text-foreground">DayDigest</span>
         </Link>
-        
+
         <nav className="hidden md:flex items-center space-x-2">
            <Button variant="ghost" asChild className="text-foreground hover:text-primary">
              <Link href="/#features">Features</Link>
@@ -26,9 +27,11 @@ export function Navbar() {
            <Button variant="ghost" asChild className="text-foreground hover:text-primary">
              <Link href="/#faq">FAQ</Link>
            </Button>
-           <Button asChild className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
-             <Link href="/dashboard">Get Started</Link> {/* Updated Link */}
-           </Button>
+           <Link href="/dashboard" asChild>
+             <Button className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
+               Get Started
+             </Button>
+           </Link>
         </nav>
 
         <div className="md:hidden">
@@ -46,38 +49,58 @@ export function Navbar() {
               </SheetHeader>
               <nav className="flex flex-col space-y-4 mt-8">
                 <SheetClose asChild>
-                  <Link href="/#features" passHref legacyBehavior>
-                    <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary">
-                      Features
-                    </Button>
+                  <Link
+                    href="/#features"
+                    className={cn(
+                      buttonVariants({ variant: 'ghost' }),
+                      "h-auto justify-start px-2 py-1.5 text-lg text-foreground hover:text-primary"
+                    )}
+                  >
+                    Features
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Link href="/#testimonials" passHref legacyBehavior>
-                    <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary">
-                      Testimonials
-                    </Button>
+                  <Link
+                    href="/#testimonials"
+                    className={cn(
+                      buttonVariants({ variant: 'ghost' }),
+                      "h-auto justify-start px-2 py-1.5 text-lg text-foreground hover:text-primary"
+                    )}
+                  >
+                    Testimonials
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Link href="/#pricing" passHref legacyBehavior>
-                    <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary">
-                      Pricing
-                    </Button>
+                  <Link
+                    href="/#pricing"
+                    className={cn(
+                      buttonVariants({ variant: 'ghost' }),
+                      "h-auto justify-start px-2 py-1.5 text-lg text-foreground hover:text-primary"
+                    )}
+                  >
+                    Pricing
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Link href="/#faq" passHref legacyBehavior>
-                    <Button variant="ghost" className="justify-start text-lg text-foreground hover:text-primary">
-                      FAQ
-                    </Button>
+                  <Link
+                    href="/#faq"
+                    className={cn(
+                      buttonVariants({ variant: 'ghost' }),
+                      "h-auto justify-start px-2 py-1.5 text-lg text-foreground hover:text-primary"
+                    )}
+                  >
+                    FAQ
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Link href="/dashboard" passHref legacyBehavior> {/* Updated Link */}
-                    <Button className="justify-center text-lg rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                      Get Started
-                    </Button>
+                  <Link
+                    href="/dashboard"
+                    className={cn(
+                      buttonVariants({ variant: 'default' }),
+                      "h-auto justify-center text-lg rounded-full px-4 py-2 text-primary-foreground"
+                    )}
+                  >
+                    Get Started
                   </Link>
                 </SheetClose>
               </nav>
