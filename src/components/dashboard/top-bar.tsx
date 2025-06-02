@@ -4,8 +4,6 @@
 import { useState, useEffect } from 'react';
 import { Bell, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-// User type import removed
-// import type { User } from '@supabase/supabase-js';
 
 interface TopBarProps {
   user: any | null; // Prop kept for structure, will be null
@@ -25,7 +23,6 @@ export default function TopBar({ user, isMobile, onMenuButtonClick }: TopBarProp
     }));
   }, []);
 
-  // Simplified welcome message
   const welcomeMessage = 'Welcome to DayDigest!';
 
   return (

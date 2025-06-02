@@ -2,7 +2,7 @@
 // You can delete this file.
 import { redirect } from 'next/navigation';
 
-export default function OldSignInPage() {
+export default function SignUpPage() {
   redirect('/'); // Redirect to homepage
   return null;
 }

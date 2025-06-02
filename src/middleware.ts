@@ -3,7 +3,6 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
   // Basic middleware, no longer performing authentication checks.
-  // You can add other non-auth related middleware logic here if needed in the future.
   return NextResponse.next({
     request: {
       headers: request.headers,

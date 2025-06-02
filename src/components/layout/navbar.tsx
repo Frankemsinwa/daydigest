@@ -27,11 +27,11 @@ export function Navbar() {
            <Button variant="ghost" asChild className="text-foreground hover:text-primary">
              <Link href="/#faq">FAQ</Link>
            </Button>
-           <Link href="/dashboard" asChild>
-             <Button className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
-               Get Started
-             </Button>
-           </Link>
+           <Link href="/dashboard" passHref legacyBehavior>
+              <Button asChild className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                <a>Get Started</a>
+              </Button>
+            </Link>
         </nav>
 
         <div className="md:hidden">

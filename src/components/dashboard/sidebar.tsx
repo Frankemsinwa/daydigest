@@ -2,11 +2,8 @@
 'use client';
 
 import Link from 'next/link';
-// useRouter and supabase client removed
-// import { useRouter } from 'next/navigation';
-// import { supabase } from '@/lib/supabaseClient'; 
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'; // AvatarImage removed
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   Home,
   BookText,
@@ -14,36 +11,26 @@ import {
   MessageSquareQuote,
   BarChart3,
   Settings,
-  // LogOut, // LogOut icon removed
   Brain,
-  UserCircle, // Kept for placeholder
+  UserCircle,
 } from 'lucide-react';
-// User type import removed
-// import type { User } from '@supabase/supabase-js';
 
 interface SidebarProps {
-  user: any | null; // Prop kept for structure, but will be null and not used for auth
+  user: any | null; // Prop kept for structure, but will be null
   onLinkClick?: () => void;
 }
 
 export default function Sidebar({ user, onLinkClick }: SidebarProps) {
-  // const router = useRouter(); // Removed
-
-  // Logout handler removed
-  // const handleLogout = async () => { ... };
-
   const menuItems = [
     { name: 'Home', icon: Home, href: '/dashboard' },
     { name: 'Daily Summary', icon: BookText, href: '/dashboard#generate-ai' },
     { name: 'Focus Recommendations', icon: Target, href: '/dashboard#generate-ai' },
     { name: 'Reflection Prompts', icon: MessageSquareQuote, href: '/dashboard#generate-ai' },
     { name: 'Insights/History', icon: BarChart3, href: '/dashboard#history' },
-    { name: 'Settings', icon: Settings, href: '/dashboard#quick-notes' },
+    { name: 'Settings', icon: Settings, href: '/dashboard#quick-notes' }, // Example link
   ];
 
-  // User-specific display logic removed or simplified
   const displayName = 'Guest User';
-  // const avatarUrl = null; // Removed
 
   const handleLinkClick = () => {
     if (onLinkClick) {
@@ -74,7 +61,6 @@ export default function Sidebar({ user, onLinkClick }: SidebarProps) {
         ))}
       </nav>
       <div className="mt-auto">
-        {/* Logout Button Removed */}
         <div className="flex items-center space-x-3 mt-4 pt-4 border-t border-border/70">
           <Avatar className="h-10 w-10">
             <AvatarFallback>
