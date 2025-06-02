@@ -2,7 +2,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { User } from '@supabase/supabase-js';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import Sidebar from '@/components/dashboard/sidebar';
@@ -11,10 +10,9 @@ import { Toaster } from "@/components/ui/toaster";
 
 export default function DashboardClientLayout({
   children,
-  user,
 }: {
   children: React.ReactNode;
-  user: User | null;
+  user: any | null; // Kept for structure, but will always be null
 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
@@ -35,18 +33,18 @@ export default function DashboardClientLayout({
               <SheetDescription>Main navigation for the dashboard.</SheetDescription>
             </SheetHeader>
             <Sidebar
-              user={user}
+              user={null} 
               onLinkClick={() => setIsMobileMenuOpen(false)}
             />
           </SheetContent>
         </Sheet>
       ) : (
-        <Sidebar user={user} />
+        <Sidebar user={null} />
       )}
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <TopBar
-          user={user}
+          user={null}
           isMobile={isMobile || false}
           onMenuButtonClick={() => setIsMobileMenuOpen(true)}
         />

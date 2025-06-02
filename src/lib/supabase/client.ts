@@ -1,8 +1,3 @@
-import { createBrowserClient } from '@supabase/ssr'
-
-export function createClient() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-}
+// This file is no longer needed as Supabase and authentication have been removed.
+// You can safely delete this file.
+export {};
