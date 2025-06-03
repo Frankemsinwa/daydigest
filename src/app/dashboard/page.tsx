@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import DailySummaryHistory from '@/components/dashboard/history/daily-summary-history';
 import FocusRecommendationsHistory from '@/components/dashboard/history/focus-recommendations-history';
 import ReflectionPromptsHistory from '@/components/dashboard/history/reflection-prompts-history';
+import SettingsSection from '@/components/dashboard/settings-section';
 import { SkeletonHistoryList } from '@/components/ui/skeleton-history-card';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
@@ -68,6 +69,11 @@ export default async function DashboardPage() {
           <p>This section is under construction. Forms used here should be responsive.</p>
         </div>
       </section>
+
+      <Separator className="my-10 bg-border/50" />
+
+      <SettingsSection />
+
     </div>
   );
 }
