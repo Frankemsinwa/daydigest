@@ -1,7 +1,9 @@
+
 // src/components/dashboard/generate-section.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -22,6 +24,22 @@ interface GenerateSectionProps {
 
 export default function GenerateSection({ userId }: GenerateSectionProps) {
   const { toast } = useToast();
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'daily-summary';
+  const [activeTab, setActiveTab] = useState(initialTab);
+
+  // Update activeTab if query param changes
+  useEffect(() => {
+    const currentQueryTab = searchParams.get('tab');
+    if (currentQueryTab && currentQueryTab !== activeTab) {
+      setActiveTab(currentQueryTab);
+    }
+    // If the query param is removed but we were on a specific tab,
+    // we might want to reset or just let the user's last clicked tab persist.
+    // For simplicity, we'll let it persist if the query param is removed after initial load.
+    // If the component re-mounts, `initialTab` will re-evaluate.
+  }, [searchParams, activeTab]);
+
 
   const [accomplishments, setAccomplishments] = useState('');
   const [insights, setInsights] = useState('');
@@ -138,10 +156,14 @@ export default function GenerateSection({ userId }: GenerateSectionProps) {
     setIsPromptSaving(false);
   };
 
+  // Ensure activeTab is a valid tab value
+  const validTabs = ['daily-summary', 'focus-recommendations', 'reflection-prompt'];
+  const currentTabValue = validTabs.includes(activeTab) ? activeTab : 'daily-summary';
+
   return (
     <section id="generate-ai" className="scroll-mt-20">
       <h2 className="text-2xl font-semibold text-foreground mb-4">Generate with AI</h2>
-      <Tabs defaultValue="daily-summary" className="w-full">
+      <Tabs value={currentTabValue} onValueChange={setActiveTab} className="w-full">
         <TabsList className="flex w-full items-center justify-around rounded-md bg-muted p-1 text-muted-foreground mb-4 md:grid md:grid-cols-3">
            <TabsTrigger value="daily-summary" className="flex items-center justify-center gap-2 whitespace-normal text-center px-2 py-1.5 md:px-3 data-[state=active]:bg-card data-[state=active]:text-primary data-[state=active]:shadow-sm">
             <BookText className="h-5 w-5 md:h-4 md:w-4 flex-shrink-0" />
