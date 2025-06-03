@@ -34,9 +34,9 @@ function getUserInitials(name?: string | null): string {
 export default function Sidebar({ user, onLinkClick }: SidebarProps) {
   const menuItems = [
     { name: 'Home', icon: Home, href: '/dashboard' },
-    { name: 'Daily Summary', icon: BookText, href: '/dashboard#generate-ai' },
-    { name: 'Focus Recommendations', icon: Target, href: '/dashboard#generate-ai' },
-    { name: 'Reflection Prompts', icon: MessageSquareQuote, href: '/dashboard#generate-ai' },
+    { name: 'Daily Summary', icon: BookText, href: '/dashboard?tab=daily-summary#generate-ai' },
+    { name: 'Focus Recommendations', icon: Target, href: '/dashboard?tab=focus-recommendations#generate-ai' },
+    { name: 'Reflection Prompts', icon: MessageSquareQuote, href: '/dashboard?tab=reflection-prompt#generate-ai' },
     { name: 'Insights/History', icon: BarChart3, href: '/dashboard#history' },
     { name: 'Settings', icon: Settings, href: '/dashboard#quick-notes' }, // Example link
   ];
