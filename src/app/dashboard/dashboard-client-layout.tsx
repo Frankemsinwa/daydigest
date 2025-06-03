@@ -7,12 +7,15 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '
 import Sidebar from '@/components/dashboard/sidebar';
 import TopBar from '@/components/dashboard/top-bar';
 import { Toaster } from "@/components/ui/toaster";
+import type { User } from '@supabase/supabase-js';
+
 
 export default function DashboardClientLayout({
   children,
+  user,
 }: {
   children: React.ReactNode;
-  user: any | null; // Kept for structure, but will always be null
+  user: User | null; 
 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
@@ -33,18 +36,18 @@ export default function DashboardClientLayout({
               <SheetDescription>Main navigation for the dashboard.</SheetDescription>
             </SheetHeader>
             <Sidebar
-              user={null} 
+              user={user} 
               onLinkClick={() => setIsMobileMenuOpen(false)}
             />
           </SheetContent>
         </Sheet>
       ) : (
-        <Sidebar user={null} />
+        <Sidebar user={user} />
       )}
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <TopBar
-          user={null}
+          user={user}
           isMobile={isMobile || false}
           onMenuButtonClick={() => setIsMobileMenuOpen(true)}
         />

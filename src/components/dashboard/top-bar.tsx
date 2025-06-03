@@ -4,9 +4,10 @@
 import { useState, useEffect } from 'react';
 import { Bell, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import type { User } from '@supabase/supabase-js';
 
 interface TopBarProps {
-  user: any | null; // Prop kept for structure, will be null
+  user: User | null;
   isMobile: boolean;
   onMenuButtonClick: () => void;
 }
@@ -23,7 +24,9 @@ export default function TopBar({ user, isMobile, onMenuButtonClick }: TopBarProp
     }));
   }, []);
 
-  const welcomeMessage = 'Welcome to DayDigest!';
+  const welcomeMessage = user 
+    ? `Welcome back, ${user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}!` 
+    : 'Welcome to DayDigest!';
 
   return (
     <header className="h-16 bg-card border-b border-border/70 px-4 md:px-6 flex items-center justify-between shrink-0">

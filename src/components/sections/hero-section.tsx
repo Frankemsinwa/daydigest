@@ -26,7 +26,7 @@ export function HeroSection() {
           DayDigest makes it easy to pause, reflect, and understand your day  so you can feel more focused and in control.
 
           </p>
-          <Link href="/dashboard" passHref legacyBehavior>
+          <Link href="/signup" passHref legacyBehavior>
             <Button
               asChild
               size="lg"
