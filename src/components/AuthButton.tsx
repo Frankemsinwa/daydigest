@@ -20,13 +20,18 @@ interface AuthButtonProps {
   user: User | null;
 }
 
-function getUserInitials(name?: string | null): string {
-  if (!name) return 'GU'; // Guest User or Generic User
-  const nameParts = name.split(' ');
-  if (nameParts.length > 1) {
-    return `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`.toUpperCase();
+function getUserInitials(name?: string | null, email?: string | null): string {
+  if (name) {
+    const nameParts = name.split(' ');
+    if (nameParts.length > 1) {
+      return `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`.toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
   }
-  return name.substring(0, 2).toUpperCase();
+  if (email) {
+    return email.substring(0, 2).toUpperCase();
+  }
+  return 'GU'; // Guest User or Generic User
 }
 
 
@@ -38,7 +43,7 @@ export default function AuthButton({ user }: AuthButtonProps) {
   if (user) {
     const userEmail = user.email;
     const userFullName = user.user_metadata?.full_name;
-    const userAvatarUrl = user.user_metadata?.avatar_url;
+    const userAvatarUrl = user.user_metadata?.avatar_url; // Usually from OAuth provider like Google
     const displayName = userFullName || userEmail;
 
 
@@ -49,7 +54,7 @@ export default function AuthButton({ user }: AuthButtonProps) {
             <Button variant="ghost" className="relative h-10 w-10 rounded-full">
               <Avatar className="h-10 w-10">
                 {userAvatarUrl && <AvatarImage src={userAvatarUrl} alt={displayName || 'User Avatar'} />}
-                <AvatarFallback>{getUserInitials(displayName)}</AvatarFallback>
+                <AvatarFallback>{getUserInitials(userFullName, userEmail)}</AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
@@ -66,12 +71,17 @@ export default function AuthButton({ user }: AuthButtonProps) {
             <DropdownMenuItem asChild>
               <Link href="/dashboard">Dashboard</Link>
             </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard#settings">Settings</Link>
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <form action={handleSignOut} className="w-full">
-              <Button variant="ghost" type="submit" className="w-full justify-start px-2 py-1.5 text-sm">
-                <LogOut className="mr-2 h-4 w-4" />
-                Log out
-              </Button>
+               <DropdownMenuItem asChild>
+                  <Button variant="ghost" type="submit" className="w-full justify-start px-2 py-1.5 text-sm cursor-pointer">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Log out
+                  </Button>
+               </DropdownMenuItem>
             </form>
           </DropdownMenuContent>
         </DropdownMenu>

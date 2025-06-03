@@ -1,3 +1,4 @@
+
 // src/app/dashboard/page.tsx
 import React from 'react';
 import GenerateSection from '@/components/dashboard/generate-section';
@@ -72,7 +73,7 @@ export default async function DashboardPage() {
 
       <Separator className="my-10 bg-border/50" />
 
-      <SettingsSection />
+      <SettingsSection user={user} />
 
     </div>
   );
