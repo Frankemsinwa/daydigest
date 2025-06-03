@@ -3,7 +3,9 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import LogoutButton from '@/components/LogoutButton';
+import type { User } from '@supabase/supabase-js';
 import {
   Home,
   BookText,
@@ -16,8 +18,17 @@ import {
 } from 'lucide-react';
 
 interface SidebarProps {
-  user: any | null; // Prop kept for structure, but will be null
+  user: User | null; 
   onLinkClick?: () => void;
+}
+
+function getUserInitials(name?: string | null): string {
+  if (!name) return 'GU';
+  const nameParts = name.split(' ');
+  if (nameParts.length > 1) {
+    return `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`.toUpperCase();
+  }
+  return name.substring(0, 2).toUpperCase();
 }
 
 export default function Sidebar({ user, onLinkClick }: SidebarProps) {
@@ -30,7 +41,8 @@ export default function Sidebar({ user, onLinkClick }: SidebarProps) {
     { name: 'Settings', icon: Settings, href: '/dashboard#quick-notes' }, // Example link
   ];
 
-  const displayName = 'Guest User';
+  const displayName = user?.user_metadata?.full_name || user?.email || 'Guest User';
+  const avatarUrl = user?.user_metadata?.avatar_url;
 
   const handleLinkClick = () => {
     if (onLinkClick) {
@@ -63,16 +75,19 @@ export default function Sidebar({ user, onLinkClick }: SidebarProps) {
       <div className="mt-auto">
         <div className="flex items-center space-x-3 mt-4 pt-4 border-t border-border/70">
           <Avatar className="h-10 w-10">
+            {avatarUrl && <AvatarImage src={avatarUrl} alt={displayName} />}
             <AvatarFallback>
-              <UserCircle className="h-5 w-5" />
+              {avatarUrl ? getUserInitials(displayName) : <UserCircle className="h-5 w-5" />}
             </AvatarFallback>
           </Avatar>
-          <div>
+          <div className="truncate">
             <p className="text-sm font-medium text-foreground truncate">
               {displayName}
             </p>
+            {user && <p className="text-xs text-muted-foreground truncate">{user.email}</p>}
           </div>
         </div>
+         {user && <LogoutButton className="mt-4" />}
       </div>
     </aside>
   );

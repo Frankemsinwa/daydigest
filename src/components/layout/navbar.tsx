@@ -4,8 +4,13 @@ import { Brain, Menu } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription, SheetHeader } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
+import AuthButton from '@/components/AuthButton';
+import { createClient } from '@/utils/supabase/server'; // For server-side user fetch
 
-export function Navbar() {
+export async function Navbar() {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container px-4 flex h-16 max-w-screen-2xl items-center justify-between">
@@ -27,14 +32,26 @@ export function Navbar() {
            <Button variant="ghost" asChild className="text-foreground hover:text-primary">
              <Link href="/#faq">FAQ</Link>
            </Button>
-           <Link href="/dashboard" passHref legacyBehavior>
-              <Button asChild className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                <a>Get Started</a>
-              </Button>
-            </Link>
+           {user ? (
+             <AuthButton user={user} />
+           ) : (
+             <>
+               <Link href="/login" passHref legacyBehavior>
+                 <Button variant="ghost" asChild className="text-foreground hover:text-primary">
+                    <a>Login</a>
+                 </Button>
+               </Link>
+               <Link href="/signup" passHref legacyBehavior>
+                  <Button asChild className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                    <a>Get Started</a>
+                  </Button>
+                </Link>
+             </>
+           )}
         </nav>
 
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-2">
+          <AuthButton user={user} />
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon" className="border-foreground/50 text-foreground">
@@ -92,17 +109,32 @@ export function Navbar() {
                     FAQ
                   </Link>
                 </SheetClose>
-                <SheetClose asChild>
-                  <Link
-                    href="/dashboard"
-                    className={cn(
-                      buttonVariants({ variant: 'default' }),
-                      "h-auto justify-center text-lg rounded-full px-4 py-2 text-primary-foreground"
-                    )}
-                  >
-                    Get Started
-                  </Link>
-                </SheetClose>
+                {!user && (
+                  <>
+                    <SheetClose asChild>
+                      <Link
+                        href="/login"
+                        className={cn(
+                          buttonVariants({ variant: 'ghost' }),
+                          "h-auto justify-start px-2 py-1.5 text-lg text-foreground hover:text-primary"
+                        )}
+                      >
+                        Login
+                      </Link>
+                    </SheetClose>
+                     <SheetClose asChild>
+                      <Link
+                        href="/signup"
+                         className={cn(
+                          buttonVariants({ variant: 'default' }),
+                          "h-auto justify-center text-lg rounded-full px-4 py-2 text-primary-foreground"
+                        )}
+                      >
+                        Get Started
+                      </Link>
+                    </SheetClose>
+                  </>
+                )}
               </nav>
             </SheetContent>
           </Sheet>

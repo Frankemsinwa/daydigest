@@ -1,85 +1,80 @@
+
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-
 import { createClient } from "@/utils/supabase/server";
+import type { z } from "zod";
+import type { loginSchema, signupSchema } from "@/lib/schemas"; // We'll create this
 
-export async function login(formData: FormData) {
+export async function login(values: z.infer<typeof loginSchema>) {
   const supabase = createClient();
+  const origin = headers().get("origin");
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
-
-  const { error } = await supabase.auth.signInWithPassword(data);
+  const { error } = await supabase.auth.signInWithPassword({
+    email: values.email,
+    password: values.password,
+  });
 
   if (error) {
-    redirect("/error");
+    return redirect(`/login?message=Could not authenticate user: ${error.message}`);
   }
 
-  revalidatePath("/", "layout");
-  redirect("/");
+  return redirect("/dashboard");
 }
 
-export async function signup(formData: FormData) {
+export async function signup(values: z.infer<typeof signupSchema>) {
   const supabase = createClient();
+  const origin = headers().get("origin");
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const firstName = formData.get("first-name") as string;
-  const lastName = formData.get("last-name") as string;
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
+  const { error } = await supabase.auth.signUp({
+    email: values.email,
+    password: values.password,
     options: {
+      emailRedirectTo: `${origin}/auth/callback`,
       data: {
-        full_name: `${firstName + " " + lastName}`,
-        email: formData.get("email") as string,
-      },
-    },
-  };
-
-  const { error } = await supabase.auth.signUp(data);
-
-  if (error) {
-    redirect("/error");
-  }
-
-  revalidatePath("/", "layout");
-  redirect("/");
-}
-
-export async function signout() {
-  const supabase = createClient();
-  const { error } = await supabase.auth.signOut();
-  if (error) {
-    console.log(error);
-    redirect("/error");
-  }
-
-  redirect("/logout");
-}
-
-export async function signInWithGoogle() {
-  const supabase = createClient();
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      queryParams: {
-        access_type: "offline",
-        prompt: "consent",
-      },
+        full_name: values.fullName || values.email.split('@')[0], // Use fullName if provided
+      }
     },
   });
 
   if (error) {
-    console.log(error);
-    redirect("/error");
+    return redirect(`/signup?message=Could not create user: ${error.message}`);
   }
 
-  redirect(data.url);
+  // For now, we'll redirect to a page telling the user to check their email.
+  // Supabase sends a confirmation email by default.
+  return redirect("/login?message=Check email to continue sign in process");
+}
+
+export async function signInWithGoogle() {
+  const supabase = createClient();
+  const origin = headers().get("origin");
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+      }
+    },
+  });
+
+  if (error) {
+    console.error("Google Sign-In Error:", error);
+    return redirect("/login?message=Could not sign in with Google");
+  }
+
+  if (data.url) {
+    return redirect(data.url);
+  }
+  return redirect("/login?message=An unexpected error occurred with Google Sign-In");
+}
+
+export async function signout() {
+  const supabase = createClient();
+  await supabase.auth.signOut();
+  return redirect("/");
 }

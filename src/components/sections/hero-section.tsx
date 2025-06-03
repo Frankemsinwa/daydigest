@@ -25,7 +25,7 @@ export function HeroSection() {
           <p className="text-lg md:text-xl text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-700 [animation-delay:300ms]">
           Transform daily reflections into actionable insights and focused growth. AI-powered summaries, recommendations, and prompts at your fingertips.
           </p>
-          <Link href="/dashboard" passHref legacyBehavior>
+          <Link href="/signup" passHref legacyBehavior>
             <Button
               asChild
               size="lg"
