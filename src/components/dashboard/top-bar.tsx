@@ -43,7 +43,7 @@ export default function TopBar({ user, isMobile, onMenuButtonClick }: TopBarProp
           </Button>
         )}
         <div>
-          <h1 className="text-lg md:text-xl font-semibold text-foreground">
+          <h1 className="text-sm md:text-xl font-semibold text-foreground">
             {welcomeMessage}
           </h1>
           <p className="text-sm text-muted-foreground">{currentDate || 'Loading date...'}</p>
