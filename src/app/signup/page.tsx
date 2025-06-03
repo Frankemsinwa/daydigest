@@ -9,13 +9,12 @@ import { signup, signInWithGoogle } from '@/lib/auth-actions';
 import { signupSchema } from '@/lib/schemas';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useSearchParams } from 'next/navigation';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Terminal } from 'lucide-react';
-
+import { Terminal, Loader2 } from 'lucide-react';
+import React from 'react'; // Import React for Suspense
 
 const GoogleIcon = () => (
   <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
@@ -27,7 +26,7 @@ const GoogleIcon = () => (
   </svg>
 );
 
-export default function SignupPage() {
+function SignupContent() {
   const searchParams = useSearchParams();
   const message = searchParams.get('message');
 
@@ -46,102 +45,111 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md shadow-2xl">
-        <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold">Create an Account</CardTitle>
-          <CardDescription>Join DayDigest to start your journey of reflection and growth.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {message && (
-             <Alert variant={message.startsWith("Could not") ? "destructive" : "default"} className="mb-4">
-              <Terminal className="h-4 w-4" />
-              <AlertTitle>{message.startsWith("Could not") ? "Error" : "Information"}</AlertTitle>
-              <AlertDescription>{message}</AlertDescription>
-            </Alert>
-          )}
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="fullName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Full Name (Optional)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John Doe" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="you@example.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="••••••••" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="••••••••" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? 'Creating Account...' : 'Create Account'}
-              </Button>
-            </form>
-          </Form>
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-border" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                Or continue with
-              </span>
-            </div>
-          </div>
-           <form action={signInWithGoogle}>
-            <Button variant="outline" type="submit" className="w-full">
-              <GoogleIcon />
-              Sign up with Google
+    <Card className="w-full max-w-md shadow-2xl">
+      <CardHeader className="text-center">
+        <CardTitle className="text-3xl font-bold">Create an Account</CardTitle>
+        <CardDescription>Join DayDigest to start your journey of reflection and growth.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {message && (
+            <Alert variant={message.startsWith("Could not") || message.startsWith("Error:") ? "destructive" : "default"} className="mb-4">
+            <Terminal className="h-4 w-4" />
+            <AlertTitle>{message.startsWith("Could not") || message.startsWith("Error:") ? "Error" : "Information"}</AlertTitle>
+            <AlertDescription>{message}</AlertDescription>
+          </Alert>
+        )}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="fullName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="John Doe" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="you@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="••••••••" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="••••••••" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+              {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {form.formState.isSubmitting ? 'Creating Account...' : 'Create Account'}
             </Button>
           </form>
-        </CardContent>
-        <CardFooter className="flex flex-col items-center space-y-2 text-sm">
-          <Link href="/login" className="font-medium text-primary hover:underline">
-            Already have an account? Sign in
-          </Link>
-        </CardFooter>
-      </Card>
+        </Form>
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-border" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
+          <form action={signInWithGoogle}>
+          <Button variant="outline" type="submit" className="w-full">
+            <GoogleIcon />
+            Sign up with Google
+          </Button>
+        </form>
+      </CardContent>
+      <CardFooter className="flex flex-col items-center space-y-2 text-sm">
+        <Link href="/login" className="font-medium text-primary hover:underline">
+          Already have an account? Sign in
+        </Link>
+      </CardFooter>
+    </Card>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <React.Suspense fallback={<div className="flex items-center justify-center h-32 w-32"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+        <SignupContent />
+      </React.Suspense>
     </div>
   );
 }
