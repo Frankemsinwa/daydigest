@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   title: 'DayDigest - Reflect, Focus, Grow',
   description: 'AI-powered daily summaries, focus recommendations, and reflection prompts to enhance your productivity and personal growth.',
   manifest: '/manifest.json',
-  icons: { apple: "/icons/icon-192x192.png"},
+  icons: { apple: "/icons/app-icon.png"},
 };
 
 export const viewport: Viewport = {
