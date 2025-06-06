@@ -8,6 +8,7 @@ import Sidebar from '@/components/dashboard/sidebar';
 import TopBar from '@/components/dashboard/top-bar';
 import { Toaster } from "@/components/ui/toaster";
 import type { User } from '@supabase/supabase-js';
+import AddToHomeScreen from '@/components/pwa/add-to-home-screen';
 
 
 export default function DashboardClientLayout({
@@ -56,6 +57,7 @@ export default function DashboardClientLayout({
         </main>
       </div>
       <Toaster />
+      <AddToHomeScreen />
     </div>
   );
 }
